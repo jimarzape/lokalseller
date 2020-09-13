@@ -26,7 +26,7 @@ function _pages()
 
     $sub['title']       = 'Manage Products';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = route('product.manage');
     $sub['status']      = '';
     $sub['desc']        = 'nav.products.manage';
     
@@ -34,7 +34,7 @@ function _pages()
 
     $sub['title']       = 'Add Products';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = route('product.add');
     $sub['status']      = '';
     $sub['desc']        = 'nav.products.add';
     
@@ -42,7 +42,7 @@ function _pages()
 
     $sub['title']       = 'Media Center';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = route('product.media.center');
     $sub['status']      = '';
     $sub['desc']        = 'nav.products.media.center';
     
@@ -50,7 +50,7 @@ function _pages()
 
     $sub['title']       = 'Manage Image';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = route('product.manage.image');
     $sub['status']      = '';
     $sub['desc']        = 'nav.products.manage.image';
     
@@ -58,7 +58,7 @@ function _pages()
 
     $sub['title']       = 'Decorate Products';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.products.decorate';
     
@@ -78,7 +78,7 @@ function _pages()
 
     $sub['title']       = 'Orders';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.orders.orders';
     
@@ -86,7 +86,7 @@ function _pages()
 
     $sub['title']       = 'Return Orders';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.orders.returns';
     
@@ -94,7 +94,7 @@ function _pages()
 
     $sub['title']       = 'Reviews';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.orders.reviews';
     
@@ -113,7 +113,7 @@ function _pages()
 
     $sub['title']       = 'Overview';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -121,7 +121,7 @@ function _pages()
 
     $sub['title']       = 'Sponsored Search';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.search';
     
@@ -129,7 +129,7 @@ function _pages()
 
     $sub['title']       = 'Sponsored Affiliate';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.affiliate';
     
@@ -137,7 +137,7 @@ function _pages()
 
     $sub['title']       = 'Sponsored Affiliate Reports';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.affiliate.reports';
     
@@ -145,7 +145,7 @@ function _pages()
 
     $sub['title']       = 'Change History';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.change.history';
     
@@ -164,7 +164,7 @@ function _pages()
 
     $sub['title']       = 'Seller Picks';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -172,7 +172,7 @@ function _pages()
 
     $sub['title']       = 'Feed';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -180,7 +180,7 @@ function _pages()
 
     $sub['title']       = 'Sponsored Products';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -199,7 +199,7 @@ function _pages()
 
     $sub['title']       = 'Campaign';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -207,7 +207,7 @@ function _pages()
 
     $sub['title']       = 'Flexi Combo';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -215,7 +215,7 @@ function _pages()
 
     $sub['title']       = 'Seller Voucher';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -223,7 +223,7 @@ function _pages()
 
     $sub['title']       = 'Free Shipping';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -231,7 +231,7 @@ function _pages()
 
     $sub['title']       = 'Bundles';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -260,7 +260,7 @@ function _pages()
 
     $sub['title']       = 'Challenges & Rewards';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -268,7 +268,7 @@ function _pages()
 
     $sub['title']       = 'Policy Compliance';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -276,7 +276,7 @@ function _pages()
 
     $sub['title']       = 'Assortment Growth';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -306,7 +306,7 @@ function _pages()
 
     $sub['title']       = 'Account Statements';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -324,7 +324,7 @@ function _pages()
 
     $sub['title']       = 'Seller Policies';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -332,7 +332,7 @@ function _pages()
 
     $sub['title']       = 'Help Center';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -340,7 +340,7 @@ function _pages()
 
     $sub['title']       = 'Service Market Place';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -359,7 +359,7 @@ function _pages()
 
     $sub['title']       = 'Profile';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
 
@@ -367,7 +367,7 @@ function _pages()
 
     $sub['title']       = 'User Management';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -375,7 +375,7 @@ function _pages()
 
     $sub['title']       = 'Account Settings';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     
@@ -383,7 +383,7 @@ function _pages()
 
     $sub['title']       = 'Chat Settings';
     $sub['icon']        = '';
-    $sub['url']         = '';
+    $sub['url']         = '#';
     $sub['status']      = '';
     $sub['desc']        = 'nav.sponsored.overview';
     

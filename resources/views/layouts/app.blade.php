@@ -311,6 +311,32 @@
             <!-- ============================================================== -->
             <div class="page-wrapper">
                 <main class="py-4">
+                    <div class="row page-titles">
+                        <div class="col-md-5 align-self-center">
+                            <h3 class="text-themecolor">{{$_pages['active_title']}}</h3>
+                        </div>
+                        <div class="col-md-7 align-self-center">
+                            <ol class="breadcrumb">
+                                @foreach($_pages['active'] as $key => $crumbs)
+                                    @php
+                                        $active = $key == (count($_pages['active']) - 1) ? 'active' : '';
+                                    @endphp
+                                    @if($active == 'active')
+                                    <li class="breadcrumb-item {{$active}}">
+                                        {{$crumbs['active_title']}}
+                                    </li>
+                                    @else
+                                    <li class="breadcrumb-item {{$active}}">
+                                        <a href="{{$crumbs['active_url']}}">{{$crumbs['active_title']}}</a>
+                                    </li>
+                                    @endif
+                                @endforeach
+                            </ol>
+                        </div>
+                        <div>
+                            <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                        </div>
+                    </div>
                     @yield('content')
                 </main>
             </div>

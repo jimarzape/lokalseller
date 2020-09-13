@@ -11,10 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
-Route::get('/home', 'DashboardController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/products/manage', 'Product\ManageProductController@index')->name('product.manage');
+Route::get('/products/add', 'Product\AddProductController@index')->name('product.add');
+Route::get('/products/media-center', 'Product\AddProductController@index')->name('product.media.center');
+Route::get('/products/manage-image', 'Product\ManageImageController@index')->name('product.manage.image');

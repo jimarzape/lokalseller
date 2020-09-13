@@ -14,11 +14,17 @@
 	background-image: url(/images/bg-2.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
-	position: absolute;
+	position: fixed !important;
 	top: 0;
 	right: 0;
 	left: 0;
 	bottom: 0;
+	overflow: auto !important;
+}
+.login-register
+{
+	position: fixed !important;
+	overflow: auto !important;
 }
 .padding-10
 {
@@ -80,4 +86,31 @@
 
 .circle-list .active ~ li::before {
   background: #d4af37;
+}
+
+.img-logo-center
+{
+	width: 140px;
+	height: 140px;
+	object-fit: contain;
+	margin: auto;
+	margin-bottom: 2em;
+}
+
+.btn-gold
+{
+	background-color:#d4af37;
+	border-color:#d4af37;
+	color:white;
+}
+.btn-gold:hover, .btn-gold:active
+{
+	background-color: #dfb940 !important;
+	border-color:#dfb940 !important;
+	color: white;
+}
+
+.color-white
+{
+	color: white !important;
 }
