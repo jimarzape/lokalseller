@@ -114,3 +114,18 @@
 {
 	color: white !important;
 }
+
+.img-75
+{
+	width: 75px;
+	height: 75px;
+	object-fit: contain;
+}
+
+.spinnger-7
+{
+	width: 7em !important;
+	height: 7em !important;
+	margin-top: 3em;
+	margin-bottom: 3em;
+}

@@ -379,6 +379,7 @@
     <!-- Style switcher -->
     <!-- ============================================================== -->
     <script src="/dark/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+    <script type="text/javascript" src="/js/global.js"></script>
     @yield('js')
 </body>
 

@@ -6,7 +6,25 @@
 @endsection
 @section('content')
 <div class="container-fluid">
-	<div class="">
+	@if (count($errors) > 0)
+	<div class="alert alert-danger alert-dismissible">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<ul>
+			@foreach($errors as $err)
+				@if(is_array ($err))
+					@foreach($err as $img)
+					<li>{{$img}}</li>
+					@endforeach
+				@else
+				<li>{{$err}}</li>
+				@endif
+			
+			@endforeach
+		</ul>
+	</div>
+	@endif
+	<form class="" action="{{route('product.save')}}" method="POST" enctype="multipart/form-data">
+		@csrf
 		<div class="card">
 			<div class="card-header text-gold">
 				Basic Information
@@ -15,7 +33,7 @@
 				<div class="row">
 					<div class="col-md-12 ">
 						<div class="form-group">
-							<label class="text-gold">Item Image/s</label>
+							<label class="text-gold">Product Image/s</label>
 		                    <div class="input-images"></div>
 	                    </div>
 					</div>
@@ -23,33 +41,44 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="text-gold">Item Name</label>
-							<input type="text" class="form-control"  name="" required>
+							<label class="text-gold">Product Name</label>
+							<input type="text" class="form-control"  name="product_name" required>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="text-gold">Display Price: (Enter the lowest price on this item).</label>
-							<input type="number" min="0" step="any" class="form-control text-right"  name="" required>
+							<input type="number" min="0" step="any" class="form-control text-right"  name="product_price" required>
 						</div>
 					</div>
 				
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="text-gold">Brands</label>
-							<select class="form-control"></select>
+							<select class="form-control" name="brand_id" required>
+								<option value="">Select Brand</option>
+								@foreach($_brands as $brand)
+								<option value="{{$brand->brand_id}}">{{$brand->brand_name}}</option>
+								@endforeach
+							</select>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="text-gold">SKU</label>
-							<input type="number" min="0" class="form-control text-right"  name="" required>
+							<input type="number" min="0" class="form-control text-right"  name="product_identifier">
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="text-gold">Short Description</label>
+							<input type="text" class="form-control" name="product_specification">
 						</div>
 					</div>
 					<div class="col-md-12">
 						<div class="form-group">
 							<label class="text-gold">Description</label>
-							<textarea class="text-html5-editor form-control" rows="15" placeholder="Enter text ..."></textarea>
+							<textarea class="text-html5-editor form-control" name="product_desc" rows="15" placeholder="Enter text ..."></textarea>
 						</div>
 					</div>
 				</div>
@@ -75,13 +104,14 @@
 									<tr>
 										<td class="text-gold">{{$attributes}}</td>
 										<td>
-											<input type="number" class="form-control text-right" step="any" min="0" name="">
+											<input type="hidden" name="sizes[]" value="{{$attributes}}">
+											<input type="number" value="0" name="price[]" class="form-control text-right" step="any" min="0">
 										</td>
 										<td>
-											<input type="number" class="form-control text-right" step="any" min="0" name="">
+											<input type="number" value="0" class="form-control text-right" step="any" min="0" name="weight[]">
 										</td>
 										<td>
-											<input type="number" class="form-control text-right" name="">
+											<input type="number" value="0" class="form-control text-right" name="stocks[]">
 										</td>
 									</tr>
 									@endforeach
@@ -95,7 +125,7 @@
 				<button class="btn btn-gold">Add to Product</button>
 			</div>
 		</div>
-	</div>
+	</form>
 </div>
 @endsection
 

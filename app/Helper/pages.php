@@ -40,6 +40,14 @@ function _pages()
     
     array_push($details['sub'], $sub);
 
+    $sub['title']       = 'Brands';
+    $sub['icon']        = '';
+    $sub['url']         = route('product.brand');
+    $sub['status']      = '';
+    $sub['desc']        = 'nav.products.categories';
+    
+    array_push($details['sub'], $sub);
+
     $sub['title']       = 'Media Center';
     $sub['icon']        = '';
     $sub['url']         = route('product.media.center');
