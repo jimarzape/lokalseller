@@ -16,4 +16,14 @@ class ProductModel extends Model
     				 ->where('seller_id', $seller_id)
     				 ->orderBy('product_name');
     }
+
+    public function scopebrands($query)
+    {
+    	return $query->leftjoin('brands','brands.brand_id','products.brand_id');
+    }
+
+    public function scopestocks($quuery)
+    {
+        return $quuery->leftjoin('stocks','stocks.product_id','products.product_id');
+    }
 }

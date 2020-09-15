@@ -45,7 +45,8 @@ class AddProductController extends MainController
                 $validator = Validator::make($fileArray, $rules);
                 if ($validator->fails())
                 {
-                    return back()->with(['errors' => $validator->errors()->getMessages()], 400);
+                    return back()->withInput($request->input())
+                                 ->with(['errors' => $validator->errors()->getMessages()], 400);
                 }
 
                 $upload_path = '/uploads/brands';
@@ -97,13 +98,14 @@ class AddProductController extends MainController
                     $stocks->save();
                 }
             }
-
+            $success['message'] = 'New Item has been inserted successfully.';
             return back()->with('success' , 'New Item has been inserted successfully.', 200);
         }
         else
         {
-            $error[] = 'Image is required.';
-            return back()->with('errors' , $error, 400);
+            $error['images'][0] = 'Image is required.';
+            return back()->withInput($request->input())
+                         ->with('errors' , $error, 400);
         }
     }
 }

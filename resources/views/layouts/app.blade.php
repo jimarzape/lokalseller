@@ -22,6 +22,7 @@
     <!-- You can change the theme colors from here -->
     <link href="/dark/css/colors/blue-dark.css" id="theme" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/custom.css?{{time()}}">
+    <link href="/dark/plugins/toast-master/css/jquery.toast.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -333,9 +334,7 @@
                                 @endforeach
                             </ol>
                         </div>
-                        <div>
-                            <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
-                        </div>
+                        
                     </div>
                     @yield('content')
                 </main>
@@ -374,11 +373,12 @@
     <script src="/dark/plugins/raphael/raphael-min.js"></script>
     <script src="/dark/plugins/morrisjs/morris.min.js"></script>
     <!-- Chart JS -->
-    <script src="/dark/js/dashboard1.js"></script>
+    <!-- <script src="/dark/js/dashboard1.js"></script> -->
     <!-- ============================================================== -->
     <!-- Style switcher -->
     <!-- ============================================================== -->
-    <script src="/dark/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+    <!-- <script src="/dark/plugins/styleswitcher/jQuery.style.switcher.js"></script> -->
+    <script src="/dark/plugins/toast-master/js/jquery.toast.js"></script>
     <script type="text/javascript" src="/js/global.js"></script>
     @yield('js')
 </body>

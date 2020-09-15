@@ -30,3 +30,8 @@ Route::post('/products/brands/save', 'Product\BrandController@save')->name('prod
 Route::post('/products/brands/view', 'Product\BrandController@view')->name('product.brand.view');
 Route::post('/products/brands/update', 'Product\BrandController@update')->name('product.brand.update');
 Route::post('/products/brands/archived', 'Product\BrandController@archived')->name('product.brand.archived');
+
+Route::post('/products/status', 'Product\ManageProductController@status')->name('product.status');
+Route::get('/products/edit/{id}', 'Product\ManageProductController@edit')->name('product.edit');
+Route::post('/products/update', 'Product\ManageProductController@update')->name('product.update');
+Route::post('/products/archived', 'Product\ManageProductController@archived')->name('product.update');

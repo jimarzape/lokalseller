@@ -18,14 +18,9 @@
 		</ul>
 	</div>
 	@endif
-	@if(session()->has('success'))
-	<div class="alert alert-success alert-dismissible">
-		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		{{ session()->get('success') }}
-	</div>
-	@endif
-	<form class="" action="{{route('product.save')}}" method="POST" enctype="multipart/form-data">
+	<form class="" action="{{route('product.update')}}" method="POST" enctype="multipart/form-data">
 		@csrf
+		<input type="hidden" name="product_id" value="{{$product->product_id}}">
 		<div class="card">
 			<div class="card-header text-gold">
 				Basic Information
@@ -43,13 +38,13 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="text-gold">Product Name</label>
-							<input type="text" class="form-control"  name="product_name" value="{{old('product_name')}}" required>
+							<input type="text" class="form-control"  name="product_name" value="{{old('product_name',$product->product_name)}}" required>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="text-gold">Display Price: (Enter the lowest price on this item).</label>
-							<input type="number" min="0" step="any" class="form-control text-right" value="{{old('product_price')}}"  name="product_price" required>
+							<input type="number" min="0" step="any" class="form-control text-right" value="{{old('product_price',$product->product_price)}}"  name="product_price" required>
 						</div>
 					</div>
 				
@@ -59,7 +54,7 @@
 							<select class="form-control" name="brand_id" required>
 								<option value="">Select Brand</option>
 								@foreach($_brands as $brand)
-								<option value="{{$brand->brand_id}}" {{old('brand_id') == $brand->brand_id ? 'selected="selected"' : ''}}>{{$brand->brand_name}}</option>
+								<option value="{{$brand->brand_id}}" {{old('brand_id',$product->brand_id) == $brand->brand_id ? 'selected="selected"' : ''}}>{{$brand->brand_name}}</option>
 								@endforeach
 							</select>
 						</div>
@@ -67,19 +62,19 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="text-gold">SKU</label>
-							<input type="text" class="form-control" value="{{old('product_identifier')}}"  name="product_identifier" required>
+							<input type="text" class="form-control" value="{{old('product_identifier',$product->product_identifier)}}"  name="product_identifier">
 						</div>
 					</div>
 					<div class="col-md-12">
 						<div class="form-group">
 							<label class="text-gold">Short Description</label>
-							<input type="text" class="form-control" name="product_specification" value="{{old('product_specification')}}">
+							<input type="text" class="form-control" name="product_specification" value="{{old('product_specification',$product->product_specification)}}">
 						</div>
 					</div>
 					<div class="col-md-12">
 						<div class="form-group">
 							<label class="text-gold">Description</label>
-							<textarea class="text-html5-editor form-control" name="product_desc" rows="15" placeholder="Enter text ...">{!!old('product_desc')!!}</textarea>
+							<textarea class="text-html5-editor form-control" name="product_desc" rows="15" placeholder="Enter text ...">{!!old('product_desc',$product->product_desc)!!}</textarea>
 						</div>
 					</div>
 				</div>
@@ -101,18 +96,19 @@
 									</tr>
 								</thead>
 								<tbody>
-									@foreach(attributes() as $key => $attributes)
+									@foreach($_attr as $key => $attr)
 									<tr>
-										<td class="text-gold">{{$attributes}}</td>
+										<td class="text-gold">{{$attr['size']}}</td>
 										<td>
-											<input type="hidden" name="sizes[]" value="{{$attributes}}">
-											<input type="number" value="0" name="price[]" class="form-control text-right" step="any" min="0">
+											<input type="hidden" name="stock_id[]" value="{{$attr['attr_id']}}">
+											<input type="hidden" name="sizes[]" value="{{$attr['size']}}">
+											<input type="number" value="{{$attr['price']}}" name="price[]" class="form-control text-right" step="any" min="0">
 										</td>
 										<td>
-											<input type="number" value="0" class="form-control text-right" step="any" min="0" name="weight[]">
+											<input type="number" value="{{$attr['weight']}}" class="form-control text-right" step="any" min="0" name="weight[]">
 										</td>
 										<td>
-											<input type="number" value="0" class="form-control text-right" name="stocks[]">
+											<input type="number" value="{{$attr['stocks']}}" class="form-control text-right" name="stocks[]">
 										</td>
 									</tr>
 									@endforeach
@@ -123,7 +119,8 @@
 				</div>
 			</div>
 			<div class="card-footer text-right">
-				<button class="btn btn-gold">Add to Product</button>
+				<a class="btn btn-danger" href="{{route('product.manage')}}">Cancel</a>
+				<button class="btn btn-gold">Update Product</button>
 			</div>
 		</div>
 	</form>
@@ -136,7 +133,16 @@
     <script src="/dark/plugins/html5-editor/bootstrap-wysihtml5.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('.input-images').imageUploader();
+		$('.input-images').imageUploader({
+			preloaded : [
+				@foreach($_images as $key => $imgs)
+				{
+					id : "{{$imgs->product_image_id.'-img'}}",
+					src : "{{$imgs->image_url}}"
+				},
+				@endforeach
+			]
+		});
 		$('.text-html5-editor').wysihtml5();
 	});
 </script>
