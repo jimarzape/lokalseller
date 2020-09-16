@@ -11,7 +11,7 @@ class Sellers extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'name','username','email', 'password','active'
+        'name','username','email', 'password','active','province','city','brgy','street_address','contact_num'
     ];
 
     protected $table = 'sellers';

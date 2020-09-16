@@ -86,7 +86,7 @@ function _pages()
 
     $sub['title']       = 'Orders';
     $sub['icon']        = '';
-    $sub['url']         = '#';
+    $sub['url']         = route('orders.orders');
     $sub['status']      = '';
     $sub['desc']        = 'nav.orders.orders';
     

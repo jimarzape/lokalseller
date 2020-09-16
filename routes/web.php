@@ -35,3 +35,14 @@ Route::post('/products/status', 'Product\ManageProductController@status')->name(
 Route::get('/products/edit/{id}', 'Product\ManageProductController@edit')->name('product.edit');
 Route::post('/products/update', 'Product\ManageProductController@update')->name('product.update');
 Route::post('/products/archived', 'Product\ManageProductController@archived')->name('product.update');
+
+Route::get('/orders', 'Orders\OrdersController@index')->name('orders.orders');
+Route::get('/orders/view/{id}', 'Orders\OrdersController@view')->name('orders.view');
+
+Route::get('/test/assign', 'TestController@assign_brand');
+Route::get('/test/assign/stock', 'TestController@assign_stocks');
+Route::get('/test/assign/image', 'TestController@assign_image');
+Route::get('/test/assign/order', 'TestController@assign_order');
+
+Route::post('/register/city', 'TestController@load_city')->name('reg.city');
+Route::post('/register/brgy', 'TestController@load_brgy')->name('reg.brgy');

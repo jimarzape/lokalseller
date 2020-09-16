@@ -48,7 +48,7 @@
 								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 								<?php if($_items->total() == 0): ?>
 								<tr>
-									<td colspan="3" class="text-gold text-center"><i>No record found.</i></td>
+									<td colspan="6" class="text-gold text-center"><i>No record found.</i></td>
 								</tr>
 								<?php endif; ?>
 							</tbody>

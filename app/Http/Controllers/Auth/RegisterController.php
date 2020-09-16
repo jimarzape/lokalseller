@@ -8,6 +8,7 @@ use App\Models\Sellers;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Province;
 
 class RegisterController extends Controller
 {
@@ -37,6 +38,12 @@ class RegisterController extends Controller
      *
      * @return void
      */
+
+    public function showRegistrationForm()
+    {
+        $data['_province'] = Province::orderBy('provDesc')->get();
+        return view('auth.register', $data);
+    }
     public function __construct()
     {
         $this->middleware('guest');
@@ -54,6 +61,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:sellers'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'contact' => ['required','string']
         ]);
     }
 
@@ -65,10 +73,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // dd($data);
         return Sellers::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'province' => $data['province'],
+            'city' => $data['city'],
+            'brgy' => $data['barangay'],
+            'street_address' => $data['street'],
+            'contact_num' => $data['contact']
         ]);
     }
 }
