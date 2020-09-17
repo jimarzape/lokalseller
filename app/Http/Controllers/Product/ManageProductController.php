@@ -8,6 +8,7 @@ use App\Models\ProductModel;
 use App\Models\BrandModel;
 use App\Models\ProductImage;
 use App\Models\StockModel;
+use Crypt;
 use Auth;
 use Validator;
 use DB;
@@ -64,6 +65,7 @@ class ManageProductController extends MainController
 
     public function edit($product_id)
     {
+        $product_id = Crypt::decrypt($product_id);
         $this->data['product'] = ProductModel::where('product_id', $product_id)->first();
         $this->data['_images'] = ProductImage::where('product_id', $product_id)->get();
         $this->data['_brands'] = BrandModel::details(Auth::user()->id)->get();

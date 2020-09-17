@@ -41,7 +41,7 @@
 										</a>
 									</td>
 									<td class="text-center">
-										<a class="btn btn-sm btn-info" href="<?php echo e(route('product.edit', $item->product_id)); ?>"><i class="ti-pencil"></i></a>
+										<a class="btn btn-sm btn-info" href="<?php echo e(route('product.edit',Crypt::encrypt ($item->product_id))); ?>"><i class="ti-pencil"></i></a>
 	                                    <button class="btn btn-sm btn-danger btn-archived" data-url="<?php echo e(route('product.update')); ?>" data-id="<?php echo e($item->product_id); ?>" data-name="<?php echo e($item->product_name); ?>"><i class="ti-trash"></i></button>
 									</td>
 								</tr>

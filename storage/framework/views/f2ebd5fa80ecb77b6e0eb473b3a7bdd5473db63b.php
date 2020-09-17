@@ -4,7 +4,7 @@
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-body">
-					<h5><?php echo e($order->order_number); ?></h5>
+					<h5 class="text-gold"><?php echo e($order->order_number); ?></h5>
 				</div>
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-header">
-					<h5 class="text-gold">LOKALDATPH</h5>
+					<h5 class="">LOKALDATPH</h5>
 				</div>
 				<div class="card-body">
 					<div class="row">
@@ -161,7 +161,7 @@
 								<tbody>
 									<?php $__currentLoopData = $_items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $items): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 									<tr>
-										<td><?php echo e($items->product_identifier); ?></td>
+										<td><a href="<?php echo e(route('product.edit',Crypt::encrypt ($items->product_id))); ?>"><?php echo e($items->product_identifier); ?></a></td>
 										<td><?php echo e($items->product_name); ?></td>
 										<td><?php echo e($items->size); ?></td>
 										<td class="text-right"><?php echo e(number_format($items->quantity)); ?></td>

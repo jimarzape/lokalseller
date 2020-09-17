@@ -5,7 +5,7 @@
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-body">
-					<h5>{{$order->order_number}}</h5>
+					<h5 class="text-gold">{{$order->order_number}}</h5>
 				</div>
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-header">
-					<h5 class="text-gold">LOKALDATPH</h5>
+					<h5 class="">LOKALDATPH</h5>
 				</div>
 				<div class="card-body">
 					<div class="row">
@@ -162,7 +162,7 @@
 								<tbody>
 									@foreach($_items as $items)
 									<tr>
-										<td>{{$items->product_identifier}}</td>
+										<td><a href="{{route('product.edit',Crypt::encrypt ($items->product_id))}}">{{$items->product_identifier}}</a></td>
 										<td>{{$items->product_name}}</td>
 										<td>{{$items->size}}</td>
 										<td class="text-right">{{number_format($items->quantity)}}</td>
