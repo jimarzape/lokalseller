@@ -9,6 +9,8 @@ use App\Models\OrderModel;
 use App\Models\OrderStatus;
 use App\Models\PaymentType;
 use App\Models\CourrierType;
+use App\Models\CartModel;
+use App\Models\PouchModel;
 use Auth;
 use Crypt;
 
@@ -66,7 +68,15 @@ class OrdersController extends MainController
     public function view($order_id)
     {
     	$order_id = Crypt::decrypt($order_id);
-    	$this->data['order'] = OrderModel::where('id', $order_id)->first();
+        
+    	$this->data['order'] = OrderModel::where('orders.id', $order_id)
+                                         ->leftjoin('users','users.userToken','orders.user_token')
+                                         ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
+                                         ->first();
+        $this->data['_items'] = CartModel::where('cart_order_number', $this->data['order']->order_number)
+                                         ->leftjoin('products','products.product_identifier','cart.product_identifier')
+                                         ->get();
+        $this->data['_pouches'] = PouchModel::orderBy('pouch_price')->get();
     	return view('orders.view', $this->data);
     }
 
