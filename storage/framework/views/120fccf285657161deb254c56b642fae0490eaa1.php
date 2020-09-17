@@ -66,8 +66,8 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="text-gold">SKU</label>
-							<input type="text" class="form-control" value="<?php echo e(old('product_identifier')); ?>"  name="product_identifier" required>
+							<label class="text-gold">SKU (optional)</label>
+							<input type="text" class="form-control" value="<?php echo e(old('product_identifier')); ?>"  name="product_identifier">
 						</div>
 					</div>
 					<div class="col-md-12">

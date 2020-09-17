@@ -59,7 +59,7 @@ class BrandController extends MainController
 		    	$brand->owner_id 			= Auth::user()->id;
 		    	$brand->brand_name 			= $request->brand_name;
 		    	$brand->brand_image 		= url($path);
-		    	$brand->brand_identifier 	= '';
+		    	$brand->brand_identifier 	= 'LK-'.Auth::user()->id.date('YmdHis');
 		    	$brand->save();
 		    }
     		

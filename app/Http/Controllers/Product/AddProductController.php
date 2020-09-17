@@ -58,8 +58,14 @@ class AddProductController extends MainController
                 array_push($path_img, $path);
             }
 
+            $sku = $request->product_identifier;
+            if($sku == null || $sku == '')
+            {
+                $sku = 'LK-'.Auth::user()->id.date('YmdHis');
+            }
+
             $product                        = new ProductModel;
-            $product->product_identifier    = $request->product_identifier;
+            $product->product_identifier    = $sku;
             $product->product_name          = $request->product_name;
             $product->product_image         = '';
             $product->brand_identifier      = '';
