@@ -38,6 +38,8 @@ Route::post('/products/archived', 'Product\ManageProductController@archived')->n
 
 Route::get('/orders', 'Orders\OrdersController@index')->name('orders.orders');
 Route::get('/orders/view/{id}', 'Orders\OrdersController@view')->name('orders.view');
+Route::post('/orders/status', 'Orders\OrdersController@update_status')->name('orders.status');
+Route::post('/orders/pouch', 'Orders\OrdersController@update_pouch')->name('orders.pouch');
 
 Route::get('/test/assign', 'TestController@assign_brand');
 Route::get('/test/assign/stock', 'TestController@assign_stocks');

@@ -58,7 +58,7 @@ function  manage() {
 						alert_toast("success","Product Delete", name + ' has been deleted');
 						window.location.reload();
 					},
-					error 	: 	function(Err)
+					error 	: 	function(err)
 					{
 						alert_toast("error","Error",err.responseText);
 					}

@@ -69,15 +69,65 @@ class OrdersController extends MainController
     {
     	$order_id = Crypt::decrypt($order_id);
         
-    	$this->data['order'] = OrderModel::where('orders.id', $order_id)
+    	$this->data['order'] = OrderModel::select('*','orders.id as order_id')
+                                         ->where('orders.id', $order_id)
                                          ->leftjoin('users','users.userToken','orders.user_token')
                                          ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
+                                         ->leftjoin('delivery_types','delivery_types.id','orders.order_delivery_type')
                                          ->first();
         $this->data['_items'] = CartModel::where('cart_order_number', $this->data['order']->order_number)
                                          ->leftjoin('products','products.product_identifier','cart.product_identifier')
                                          ->get();
+        $this->data['_status'] = OrderStatus::get();
         $this->data['_pouches'] = PouchModel::orderBy('pouch_price')->get();
     	return view('orders.view', $this->data);
+    }
+
+    public function update_status(Request $request)
+    {
+        try
+        {
+            $order_id       = Crypt::decrypt($request->order_id);
+            $order          = new OrderModel;
+            $order->exists  = true;
+            $order->id      = $order_id;
+            $order->delivery_status = $request->status;
+            $order->save();
+            $status = OrderStatus::where('id', $request->status)->first();
+
+            $message['message'] = 'Order has been updated to '.$status->status_name;
+            return response()->json($message, 200);
+        }
+        catch(\Exception $e)
+        {
+            return response()->json($e->getMessage(), 500);
+        }
+        
+
+
+    }
+
+    public function update_pouch(Request $request)
+    {
+        try
+        {
+            $order_id               = Crypt::decrypt($request->order_id);
+            $pouch                  = PouchModel::where('id', $request->pouch_id)->first();
+            $order                  = new OrderModel;
+            $order->exists          = true;
+            $order->id              = $order_id;
+            $order->pouch_id        = $request->pouch_id;
+            $order->pouch_qty       = $request->pouch_qty;
+            $order->pouch_amount    = $pouch->pouch_price;
+            $order->save();
+
+            $message['message'] = 'Pouch has been updated';
+            return response()->json($message, 200);
+        }
+        catch(\Exception $e)
+        {
+            return response()->json($e->getMessage(), 500);
+        }
     }
 
 }
