@@ -139,7 +139,7 @@ class ManageProductController extends MainController
                 $destinationPath    = public_path($upload_path);
                 $image[$count]->move($destinationPath, $name);
                 $path               = url($upload_path.'/'.$name);
-                // array_push($path_img, $path);
+                array_push($path_img, $path);
 
                 $saveImg                = new ProductImage;
                 $saveImg->product_id    = $request->product_id;
@@ -151,9 +151,12 @@ class ManageProductController extends MainController
         $product                        = new ProductModel;
         $product->exists                = true;
         $product->product_id            = $request->product_id;
-        $product->product_identifier    = $request->product_identifier;
+        $product->sku                   = $request->sku;
         $product->product_name          = $request->product_name;
-        $product->product_image         = '';
+        if(isset($path_img[0]))
+        {
+            $product->product_image         = $path_img[0];
+        }
         $product->brand_identifier      = '';
         $product->product_timestamp     = date('Y-m-d H:i:s');
         $product->product_price         = $request->product_price;
@@ -162,6 +165,9 @@ class ManageProductController extends MainController
         $product->product_desc          = $request->product_desc;
         $product->seller_id             = Auth::user()->id;
         $product->save();
+
+        
+        $data = ProductModel::where('product_id', $request->product_id)->first();
 
         $_sizes = $request->sizes;
         foreach($_sizes as $key => $size)
@@ -180,7 +186,7 @@ class ManageProductController extends MainController
                 }
                 $stocks->product_id         = $product->product_id;
                 $stocks->stocks_size        = $size;
-                $stocks->product_identifier = '';
+                $stocks->product_identifier = $data->product_identifier;
                 $stocks->stocks_quantity    = $request->stocks[$key];
                 $stocks->stocks_weight      = $request->weight[$key];
                 $stocks->stocks_price       = $request->price[$key];

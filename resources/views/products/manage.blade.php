@@ -42,7 +42,7 @@
 									</td>
 									<td class="text-center">
 										<a class="btn btn-sm btn-info" href="{{route('product.edit',Crypt::encrypt ($item->product_id))}}"><i class="ti-pencil"></i></a>
-	                                    <button class="btn btn-sm btn-danger btn-archived" data-url="{{route('product.update')}}" data-id="{{$item->product_id}}" data-name="{{$item->product_name}}"><i class="ti-trash"></i></button>
+	                                    <button class="btn btn-sm btn-danger btn-archived" data-url="{{route('product.archived')}}" data-id="{{$item->product_id}}" data-name="{{$item->product_name}}"><i class="ti-trash"></i></button>
 									</td>
 								</tr>
 								@endforeach

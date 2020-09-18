@@ -62,7 +62,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="text-gold">SKU</label>
-							<input type="text" class="form-control" value="{{old('product_identifier',$product->product_identifier)}}"  name="product_identifier">
+							<input type="text" class="form-control" value="{{old('sku',$product->sku)}}"  name="sku">
 						</div>
 					</div>
 					<div class="col-md-12">
@@ -120,7 +120,7 @@
 			</div>
 			<div class="card-footer text-right">
 				<a class="btn btn-danger" href="{{route('product.manage')}}">Cancel</a>
-				<button class="btn btn-gold">Update Product</button>
+				<button class="btn btn-gold" type="submit">Update Product</button>
 			</div>
 		</div>
 	</form>

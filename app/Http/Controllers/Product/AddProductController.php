@@ -58,16 +58,13 @@ class AddProductController extends MainController
                 array_push($path_img, $path);
             }
 
-            $sku = $request->product_identifier;
-            if($sku == null || $sku == '')
-            {
-                $sku = 'LK-'.Auth::user()->id.date('YmdHis');
-            }
+            $product_identifier = 'LK-'.Auth::user()->id.date('YmdHis');
 
             $product                        = new ProductModel;
-            $product->product_identifier    = $sku;
+            $product->sku                   = $request->sku;
+            $product->product_identifier    = $product_identifier;
             $product->product_name          = $request->product_name;
-            $product->product_image         = '';
+            $product->product_image         = isset($path_img[0]) ? $path_img[0] : '';
             $product->brand_identifier      = '';
             $product->product_timestamp     = date('Y-m-d H:i:s');
             $product->product_price         = $request->product_price;
@@ -97,7 +94,7 @@ class AddProductController extends MainController
                     $stocks                     = new StockModel;
                     $stocks->product_id         = $product->product_id;
                     $stocks->stocks_size        = $size;
-                    $stocks->product_identifier = '';
+                    $stocks->product_identifier = $product_identifier;
                     $stocks->stocks_quantity    = $request->stocks[$key];
                     $stocks->stocks_weight      = $request->weight[$key];
                     $stocks->stocks_price       = $request->price[$key];

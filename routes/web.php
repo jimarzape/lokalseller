@@ -34,7 +34,7 @@ Route::post('/products/brands/archived', 'Product\BrandController@archived')->na
 Route::post('/products/status', 'Product\ManageProductController@status')->name('product.status');
 Route::get('/products/edit/{id}', 'Product\ManageProductController@edit')->name('product.edit');
 Route::post('/products/update', 'Product\ManageProductController@update')->name('product.update');
-Route::post('/products/archived', 'Product\ManageProductController@archived')->name('product.update');
+Route::post('/products/archived', 'Product\ManageProductController@archived')->name('product.archived');
 
 Route::get('/orders', 'Orders\OrdersController@index')->name('orders.orders');
 Route::get('/orders/view/{id}', 'Orders\OrdersController@view')->name('orders.view');

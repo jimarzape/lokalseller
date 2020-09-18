@@ -67,7 +67,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="text-gold">SKU (optional)</label>
-							<input type="text" class="form-control" value="{{old('product_identifier')}}"  name="product_identifier">
+							<input type="text" class="form-control" value="{{old('sku')}}"  name="sku">
 						</div>
 					</div>
 					<div class="col-md-12">
