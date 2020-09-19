@@ -95,9 +95,18 @@ class OrdersController extends MainController
             $order->id      = $order_id;
             $order->delivery_status = $request->status;
             $order->save();
+
+
+            $details = OrderModel::where('id', $order_id)->first();
+
+            $update['delivery_status'] =$request->status;
+            CartModel::where('cart_order_number', $details->order_number)->update($update);
+
             $status = OrderStatus::where('id', $request->status)->first();
 
             $message['message'] = 'Order has been updated to '.$status->status_name;
+            $message['code'] = $request->status;
+            $message['print'] = $request->status == 2 ? route('orders.print', Crypt::encrypt($order_id)) : '';
             return response()->json($message, 200);
         }
         catch(\Exception $e)
@@ -124,6 +133,7 @@ class OrdersController extends MainController
             $order->save();
 
             $message['message'] = 'Pouch has been updated';
+            $message['code'] = 0;
             return response()->json($message, 200);
         }
         catch(\Exception $e)
@@ -143,6 +153,7 @@ class OrdersController extends MainController
                                          ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
                                          ->leftjoin('delivery_types','delivery_types.id','orders.order_delivery_type')
                                          ->first();
+        // dd($order_id);
         $data['sellers']  = Sellers::where('sellers.id', $data['order']->seller_id)
                                     ->leftjoin('refprovince','refprovince.provCode','sellers.province')
                                     ->leftjoin('refcitymun','refcitymun.citymunCode','sellers.city')

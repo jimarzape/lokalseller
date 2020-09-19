@@ -41,6 +41,10 @@ function order()
 					btn.html(btn_val);
 					alert_toast("success",'Success',result.message);
 					init();
+					if(result.code == 2)
+					{
+						createPopupWin(result.print,'',700, 700);
+					}
 				},
 				error 	 : function(err)
 				{

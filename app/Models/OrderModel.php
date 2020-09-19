@@ -12,7 +12,7 @@ class OrderModel extends Model
 
     public function scopedetails($query, $seller_id)
     {
-    	return $query->select('orders.*','delivery_types.delivery_type','payment_methods.payment_method','delivery_status.status_name')
+    	return $query->select('orders.*','orders.id as order_id','delivery_types.delivery_type','payment_methods.payment_method','delivery_status.status_name')
     				 ->where('orders.seller_id', $seller_id)
     				 ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
     				 ->leftjoin('delivery_types','delivery_types.id','orders.order_delivery_type')

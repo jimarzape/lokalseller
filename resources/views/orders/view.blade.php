@@ -5,7 +5,7 @@
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-body">
-					<h5 class="text-gold">{{$order->order_number}}<a href="{{route('orders.print', Crypt::encrypt($order->order_id))}}" class="pull-right f24 btn-print-pdf"><i class="mdi mdi-printer"></i></a></h5>
+					<h5 class="text-gold">{{$order->order_number}} @if($order->delivery_status == 2)<a href="{{route('orders.print', Crypt::encrypt($order->order_id))}}" class="pull-right f24 btn-print-pdf"><i class="mdi mdi-printer"></i></a>@endif</h5>
 				</div>
 			</div>
 		</div>
@@ -80,7 +80,7 @@
 				<div class="card-body">
 					<form class="row form-submit" action="{{route('orders.status')}}" method="POST">
 						@csrf
-						<input type="hidden" value="{{Crypt::encrypt($order->order_id)}}" name="order_id">
+						<input type="hidden" value="{{Crypt::encrypt($order->order_id)}}" class="order_id" name="order_id">
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="text-gold">Status</label>
@@ -129,7 +129,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label class="text-gold">Pouch Amount</label>
-								<input type="text" readonly class="form-control text-right pouch-total" value="{{number_format($order->pouch_amount * $order->pouch_qty, 2)}}">
+								<input type="text" readonly class="form-control text-right pouch-total text-gold" value="{{number_format($order->pouch_amount * $order->pouch_qty, 2)}}">
 							</div>
 						</div>
 						<div class="col-md-12">

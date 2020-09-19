@@ -61,7 +61,7 @@
 							<?php $__currentLoopData = $_orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $orders): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 							<tr>
 								<td>
-									<a href="<?php echo e(route('orders.view', Crypt::encrypt($orders->id))); ?>"><?php echo e($orders->order_number); ?></a>
+									<a href="<?php echo e(route('orders.view', Crypt::encrypt($orders->order_id))); ?>"><?php echo e($orders->order_number); ?></a>
 								</td>
 								<td><?php echo e(date_norm(order_date($orders->order_date),'M d, y h:i a')); ?></td>
 								<td><?php echo e($orders->payment_method); ?></td>
@@ -69,7 +69,10 @@
 								<td class="text-right"><?php echo e(number_format($orders->order_amount_due, 2)); ?></td>
 								<td><?php echo e($orders->status_name); ?></td>
 								<td class="text-center">
-									<a href="<?php echo e(route('orders.view', Crypt::encrypt($orders->id))); ?>"><i class="mdi mdi-file"></i></a>
+									<a href="<?php echo e(route('orders.view', Crypt::encrypt($orders->order_id))); ?>" title="view details"><i class="mdi mdi-pencil-box"></i></a>
+									<?php if($orders->delivery_status == 2): ?>
+									<a href="<?php echo e(route('orders.print', Crypt::encrypt($orders->order_id))); ?>" class="pull-right btn-print-pdf" title="print receipt"><i class="mdi mdi-printer"></i></a>
+									<?php endif; ?>
 								</td>
 							</tr>
 							<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -88,5 +91,9 @@
 		</div>
 	</div>
 </div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('js'); ?>
+<script type="text/javascript" src="/js/order.js?<?php echo e(time()); ?>"></script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\lokalseller\resources\views/orders/index.blade.php ENDPATH**/ ?>

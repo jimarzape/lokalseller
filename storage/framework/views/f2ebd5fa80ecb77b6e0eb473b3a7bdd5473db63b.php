@@ -4,7 +4,7 @@
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-body">
-					<h5 class="text-gold"><?php echo e($order->order_number); ?><a href="<?php echo e(route('orders.print', Crypt::encrypt($order->order_id))); ?>" class="pull-right f24 btn-print-pdf"><i class="mdi mdi-printer"></i></a></h5>
+					<h5 class="text-gold"><?php echo e($order->order_number); ?> <?php if($order->delivery_status == 2): ?><a href="<?php echo e(route('orders.print', Crypt::encrypt($order->order_id))); ?>" class="pull-right f24 btn-print-pdf"><i class="mdi mdi-printer"></i></a><?php endif; ?></h5>
 				</div>
 			</div>
 		</div>
@@ -79,7 +79,7 @@
 				<div class="card-body">
 					<form class="row form-submit" action="<?php echo e(route('orders.status')); ?>" method="POST">
 						<?php echo csrf_field(); ?>
-						<input type="hidden" value="<?php echo e(Crypt::encrypt($order->order_id)); ?>" name="order_id">
+						<input type="hidden" value="<?php echo e(Crypt::encrypt($order->order_id)); ?>" class="order_id" name="order_id">
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="text-gold">Status</label>
@@ -128,7 +128,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label class="text-gold">Pouch Amount</label>
-								<input type="text" readonly class="form-control text-right pouch-total" value="<?php echo e(number_format($order->pouch_amount * $order->pouch_qty, 2)); ?>">
+								<input type="text" readonly class="form-control text-right pouch-total text-gold" value="<?php echo e(number_format($order->pouch_amount * $order->pouch_qty, 2)); ?>">
 							</div>
 						</div>
 						<div class="col-md-12">

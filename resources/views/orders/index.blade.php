@@ -62,7 +62,7 @@
 							@foreach($_orders as $orders)
 							<tr>
 								<td>
-									<a href="{{route('orders.view', Crypt::encrypt($orders->id))}}">{{$orders->order_number}}</a>
+									<a href="{{route('orders.view', Crypt::encrypt($orders->order_id))}}">{{$orders->order_number}}</a>
 								</td>
 								<td>{{date_norm(order_date($orders->order_date),'M d, y h:i a')}}</td>
 								<td>{{$orders->payment_method}}</td>
@@ -70,7 +70,10 @@
 								<td class="text-right">{{number_format($orders->order_amount_due, 2)}}</td>
 								<td>{{$orders->status_name}}</td>
 								<td class="text-center">
-									<a href="{{route('orders.view', Crypt::encrypt($orders->id))}}"><i class="mdi mdi-file"></i></a>
+									<a href="{{route('orders.view', Crypt::encrypt($orders->order_id))}}" title="view details"><i class="mdi mdi-pencil-box"></i></a>
+									@if($orders->delivery_status == 2)
+									<a href="{{route('orders.print', Crypt::encrypt($orders->order_id))}}" class="pull-right btn-print-pdf" title="print receipt"><i class="mdi mdi-printer"></i></a>
+									@endif
 								</td>
 							</tr>
 							@endforeach
@@ -88,4 +91,8 @@
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('js')
+<script type="text/javascript" src="/js/order.js?{{time()}}"></script>
 @endsection
