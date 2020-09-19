@@ -40,11 +40,13 @@ Route::get('/orders', 'Orders\OrdersController@index')->name('orders.orders');
 Route::get('/orders/view/{id}', 'Orders\OrdersController@view')->name('orders.view');
 Route::post('/orders/status', 'Orders\OrdersController@update_status')->name('orders.status');
 Route::post('/orders/pouch', 'Orders\OrdersController@update_pouch')->name('orders.pouch');
+Route::get('/orders/print/{id}', 'Orders\OrdersController@print')->name('orders.print');
 
 Route::get('/test/assign', 'TestController@assign_brand');
 Route::get('/test/assign/stock', 'TestController@assign_stocks');
 Route::get('/test/assign/image', 'TestController@assign_image');
 Route::get('/test/assign/order', 'TestController@assign_order');
+Route::get('/test/com', 'TestController@com');
 
 Route::post('/register/city', 'TestController@load_city')->name('reg.city');
 Route::post('/register/brgy', 'TestController@load_brgy')->name('reg.brgy');

@@ -10,9 +10,11 @@ use App\Models\OrderStatus;
 use App\Models\PaymentType;
 use App\Models\CourrierType;
 use App\Models\CartModel;
+use App\Models\Sellers;
 use App\Models\PouchModel;
 use Auth;
 use Crypt;
+use PDF;
 
 class OrdersController extends MainController
 {
@@ -128,6 +130,28 @@ class OrdersController extends MainController
         {
             return response()->json($e->getMessage(), 500);
         }
+    }
+
+    public function print($order_id)
+    {
+
+        $order_id = Crypt::decrypt($order_id);
+        // dd($order_id);
+        $data['order'] = OrderModel::select('*','orders.id as order_id')
+                                         ->where('orders.id', $order_id)
+                                         ->leftjoin('users','users.userToken','orders.user_token')
+                                         ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
+                                         ->leftjoin('delivery_types','delivery_types.id','orders.order_delivery_type')
+                                         ->first();
+        $data['sellers']  = Sellers::where('sellers.id', $data['order']->seller_id)
+                                    ->leftjoin('refprovince','refprovince.provCode','sellers.province')
+                                    ->leftjoin('refcitymun','refcitymun.citymunCode','sellers.city')
+                                    ->leftjoin('refbrgy','refbrgy.brgyCode','sellers.brgy')
+                                    ->first();
+        // dd($data);
+        $pdf = PDF::loadView('orders.print',$data);
+
+        return $pdf->stream(time().'.pdf');
     }
 
 }

@@ -72,6 +72,7 @@ class TestController extends Controller
     		if(!is_null($products))
     		{
     			$update['seller_id'] = $products->seller_id;
+                $update['delivery_status'] = $cart['delivery_status'];
     			OrderModel::where('order_number', $cart->cart_order_number)->update($update);
     		}
     	}	
@@ -110,5 +111,23 @@ class TestController extends Controller
             array_push($data['data'], $temp);
         }
         return response()->json($data, 200);
+    }
+
+    public function com()
+    {
+        $_order = OrderModel::get();
+        foreach($_order as $order)
+        {
+            $com = 5;
+            $share = $order->order_subtotal * ($com / 100);
+            $update = new OrderModel;
+            $update->exists = true;
+            $update->id = $order->id;
+            $update->lokal_com = $com;
+            $update->lokal_com_amount = $share;
+            $update->save();
+        }
+
+        return 'done';
     }
 }

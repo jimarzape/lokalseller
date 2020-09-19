@@ -8,6 +8,17 @@ function order()
 	{
 		form_submit();
 		pouch();
+		btn_function()
+	}
+
+	function btn_function()
+	{
+		$(".btn-print-pdf").unbind("click");
+		$(".btn-print-pdf").bind("click", function(e){
+			e.preventDefault();
+			var route = $(this).attr('href');
+			createPopupWin(route, '',700,700);
+		});
 	}
 
 	function form_submit()
@@ -77,4 +88,14 @@ function order()
 		});
 
 	}
+
+	function createPopupWin(pageURL, pageTitle, popupWinWidth, popupWinHeight) { 
+        var left = (screen.width - popupWinWidth) / 2; 
+        var top = (screen.height - popupWinHeight) / 4; 
+          
+        var myWindow = window.open(pageURL, pageTitle,  
+                'resizable=yes, width=' + popupWinWidth 
+                + ', height=' + popupWinHeight + ', top=' 
+                + top + ', left=' + left); 
+    } 
 }

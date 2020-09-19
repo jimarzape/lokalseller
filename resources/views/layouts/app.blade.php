@@ -85,7 +85,7 @@
                             <!-- ============================================================== -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-muted text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-bell"></i>
-                                    <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                                    <!-- <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div> -->
                                 </a>
                                 <div class="dropdown-menu mailbox animated slideInUp">
                                     <ul>
@@ -111,7 +111,7 @@
                             <!-- ============================================================== -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-email"></i>
-                                    <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                                    <!-- <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div> -->
                                 </a>
                                 <div class="dropdown-menu mailbox animated slideInUp" aria-labelledby="2">
                                     <ul>
@@ -151,7 +151,7 @@
                                                 <div class="u-text">
                                                     <h4>{{ Auth::user()->name }}</h4>
                                                     <p class="text-muted">{{ Auth::user()->email }}</p>
-                                                    <a href="pages-profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
+                                                    <a href="#" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
                                             </div>
                                         </li>
                                         <li role="separator" class="divider"></li>

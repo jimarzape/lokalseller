@@ -48,29 +48,29 @@ function _pages()
     
     array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Media Center';
-    $sub['icon']        = '';
-    $sub['url']         = route('product.media.center');
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.products.media.center';
+    // $sub['title']       = 'Media Center';
+    // $sub['icon']        = '';
+    // $sub['url']         = route('product.media.center');
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.products.media.center';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Manage Image';
-    $sub['icon']        = '';
-    $sub['url']         = route('product.manage.image');
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.products.manage.image';
+    // $sub['title']       = 'Manage Image';
+    // $sub['icon']        = '';
+    // $sub['url']         = route('product.manage.image');
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.products.manage.image';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Decorate Products';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.products.decorate';
+    // $sub['title']       = 'Decorate Products';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.products.decorate';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
     
 
     array_push($pages, $details);
@@ -92,322 +92,322 @@ function _pages()
     
     array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Return Orders';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.orders.returns';
+    // $sub['title']       = 'Return Orders';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.orders.returns';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Reviews';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.orders.reviews';
+    // $sub['title']       = 'Reviews';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.orders.reviews';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
     
     array_push($pages, $details);
 
-    $details['title']   = 'Sponsored Solutions'; 
-    $details['icon']    = 'mdi mdi-lightbulb-on';
-    $details['url']     = 'javascript:void(0)';
-    $details['status']  = '';
-    $details['desc']    = 'nav.sponsored';
-    $details['class']   = 'has-arrow';
-    $details['has_sub'] = true;
-    $details['sub']     = array();
+    // $details['title']   = 'Sponsored Solutions'; 
+    // $details['icon']    = 'mdi mdi-lightbulb-on';
+    // $details['url']     = 'javascript:void(0)';
+    // $details['status']  = '';
+    // $details['desc']    = 'nav.sponsored';
+    // $details['class']   = 'has-arrow';
+    // $details['has_sub'] = true;
+    // $details['sub']     = array();
 
-    $sub['title']       = 'Overview';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Overview';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Sponsored Search';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.search';
+    // $sub['title']       = 'Sponsored Search';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.search';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Sponsored Affiliate';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.affiliate';
+    // $sub['title']       = 'Sponsored Affiliate';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.affiliate';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Sponsored Affiliate Reports';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.affiliate.reports';
+    // $sub['title']       = 'Sponsored Affiliate Reports';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.affiliate.reports';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Change History';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.change.history';
+    // $sub['title']       = 'Change History';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.change.history';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    array_push($pages, $details);
+    // array_push($pages, $details);
 
-    $details['title']   = 'Traffic'; 
-    $details['icon']    = 'mdi mdi-traffic-light';
-    $details['url']     = 'javascript:void(0)';
-    $details['status']  = '';
-    $details['desc']    = 'nav.sponsored';
-    $details['class']   = 'has-arrow';
-    $details['has_sub'] = true;
-    $details['sub']     = array();
+    // $details['title']   = 'Traffic'; 
+    // $details['icon']    = 'mdi mdi-traffic-light';
+    // $details['url']     = 'javascript:void(0)';
+    // $details['status']  = '';
+    // $details['desc']    = 'nav.sponsored';
+    // $details['class']   = 'has-arrow';
+    // $details['has_sub'] = true;
+    // $details['sub']     = array();
 
-    $sub['title']       = 'Seller Picks';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Seller Picks';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Feed';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Feed';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Sponsored Products';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Sponsored Products';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    array_push($pages, $details);
+    // array_push($pages, $details);
 
-    $details['title']   = 'Promotions'; 
-    $details['icon']    = 'mdi mdi-octagram';
-    $details['url']     = 'javascript:void(0)';
-    $details['status']  = '';
-    $details['desc']    = 'nav.sponsored';
-    $details['class']   = 'has-arrow';
-    $details['has_sub'] = true;
-    $details['sub']     = array();
+    // $details['title']   = 'Promotions'; 
+    // $details['icon']    = 'mdi mdi-octagram';
+    // $details['url']     = 'javascript:void(0)';
+    // $details['status']  = '';
+    // $details['desc']    = 'nav.sponsored';
+    // $details['class']   = 'has-arrow';
+    // $details['has_sub'] = true;
+    // $details['sub']     = array();
 
-    $sub['title']       = 'Campaign';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Campaign';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Flexi Combo';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Flexi Combo';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Seller Voucher';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Seller Voucher';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Free Shipping';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Free Shipping';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Bundles';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Bundles';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    array_push($pages, $details);
+    // array_push($pages, $details);
 
-    $details['title']   = 'Store Decorations'; 
-    $details['icon']    = 'mdi mdi-store';
-    $details['url']     = 'javascript:void(0)';
-    $details['status']  = '';
-    $details['desc']    = 'nav.sponsored';
-    $details['class']   = '';
-    $details['has_sub'] = false;
-    $details['sub']     = array();
-    array_push($pages, $details);
+    // $details['title']   = 'Store Decorations'; 
+    // $details['icon']    = 'mdi mdi-store';
+    // $details['url']     = 'javascript:void(0)';
+    // $details['status']  = '';
+    // $details['desc']    = 'nav.sponsored';
+    // $details['class']   = '';
+    // $details['has_sub'] = false;
+    // $details['sub']     = array();
+    // array_push($pages, $details);
 
-    $details['title']   = 'Growth Center'; 
-    $details['icon']    = 'mdi mdi-arrow-up-bold-hexagon-outline';
-    $details['url']     = 'javascript:void(0)';
-    $details['status']  = '';
-    $details['desc']    = 'nav.sponsored';
-    $details['class']   = 'has-arrow';
-    $details['has_sub'] = true;
-    $details['sub']     = array();
+    // $details['title']   = 'Growth Center'; 
+    // $details['icon']    = 'mdi mdi-arrow-up-bold-hexagon-outline';
+    // $details['url']     = 'javascript:void(0)';
+    // $details['status']  = '';
+    // $details['desc']    = 'nav.sponsored';
+    // $details['class']   = 'has-arrow';
+    // $details['has_sub'] = true;
+    // $details['sub']     = array();
 
-    $sub['title']       = 'Challenges & Rewards';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Challenges & Rewards';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Policy Compliance';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Policy Compliance';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Assortment Growth';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Assortment Growth';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    array_push($pages, $details);
+    // array_push($pages, $details);
 
-    $details['title']   = 'Business Advisor'; 
-    $details['icon']    = 'mdi mdi-account-network';
-    $details['url']     = 'javascript:void(0)';
-    $details['status']  = '';
-    $details['desc']    = 'nav.sponsored';
-    $details['class']   = '';
-    $details['has_sub'] = false;
-    $details['sub']     = array();
-    array_push($pages, $details);
+    // $details['title']   = 'Business Advisor'; 
+    // $details['icon']    = 'mdi mdi-account-network';
+    // $details['url']     = 'javascript:void(0)';
+    // $details['status']  = '';
+    // $details['desc']    = 'nav.sponsored';
+    // $details['class']   = '';
+    // $details['has_sub'] = false;
+    // $details['sub']     = array();
+    // array_push($pages, $details);
 
 
-    $details['title']   = 'Finance'; 
-    $details['icon']    = 'mdi mdi-calculator';
-    $details['url']     = 'javascript:void(0)';
-    $details['status']  = '';
-    $details['desc']    = 'nav.sponsored';
-    $details['class']   = 'has-arrow';
-    $details['has_sub'] = true;
-    $details['sub']     = array();
+    // $details['title']   = 'Finance'; 
+    // $details['icon']    = 'mdi mdi-calculator';
+    // $details['url']     = 'javascript:void(0)';
+    // $details['status']  = '';
+    // $details['desc']    = 'nav.sponsored';
+    // $details['class']   = 'has-arrow';
+    // $details['has_sub'] = true;
+    // $details['sub']     = array();
 
-    $sub['title']       = 'Account Statements';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Account Statements';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
-    array_push($pages, $details);
+    // array_push($details['sub'], $sub);
+    // array_push($pages, $details);
 
-    $details['title']   = 'Support'; 
-    $details['icon']    = 'mdi mdi-headset';
-    $details['url']     = 'javascript:void(0)';
-    $details['status']  = '';
-    $details['desc']    = 'nav.sponsored';
-    $details['class']   = 'has-arrow';
-    $details['has_sub'] = true;
-    $details['sub']     = array();
+    // $details['title']   = 'Support'; 
+    // $details['icon']    = 'mdi mdi-headset';
+    // $details['url']     = 'javascript:void(0)';
+    // $details['status']  = '';
+    // $details['desc']    = 'nav.sponsored';
+    // $details['class']   = 'has-arrow';
+    // $details['has_sub'] = true;
+    // $details['sub']     = array();
 
-    $sub['title']       = 'Seller Policies';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Seller Policies';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Help Center';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Help Center';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Service Market Place';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Service Market Place';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    array_push($pages, $details);
+    // array_push($pages, $details);
 
-    $details['title']   = 'My Account'; 
-    $details['icon']    = 'mdi mdi-account-settings-variant';
-    $details['url']     = 'javascript:void(0)';
-    $details['status']  = '';
-    $details['desc']    = 'nav.sponsored';
-    $details['class']   = 'has-arrow';
-    $details['has_sub'] = true;
-    $details['sub']     = array();
+    // $details['title']   = 'My Account'; 
+    // $details['icon']    = 'mdi mdi-account-settings-variant';
+    // $details['url']     = 'javascript:void(0)';
+    // $details['status']  = '';
+    // $details['desc']    = 'nav.sponsored';
+    // $details['class']   = 'has-arrow';
+    // $details['has_sub'] = true;
+    // $details['sub']     = array();
 
-    $sub['title']       = 'Profile';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Profile';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
 
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'User Management';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'User Management';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Account Settings';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Account Settings';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    $sub['title']       = 'Chat Settings';
-    $sub['icon']        = '';
-    $sub['url']         = '#';
-    $sub['status']      = '';
-    $sub['desc']        = 'nav.sponsored.overview';
+    // $sub['title']       = 'Chat Settings';
+    // $sub['icon']        = '';
+    // $sub['url']         = '#';
+    // $sub['status']      = '';
+    // $sub['desc']        = 'nav.sponsored.overview';
     
-    array_push($details['sub'], $sub);
+    // array_push($details['sub'], $sub);
 
-    array_push($pages, $details);
+    // array_push($pages, $details);
 
-    $details['title']   = 'Feed Back'; 
-    $details['icon']    = 'mdi mdi-message-draw';
-    $details['url']     = 'javascript:void(0)';
-    $details['status']  = '';
-    $details['desc']    = 'nav.sponsored';
-    $details['class']   = '';
-    $details['has_sub'] = false;
-    $details['sub']     = array();
-    array_push($pages, $details);
+    // $details['title']   = 'Feed Back'; 
+    // $details['icon']    = 'mdi mdi-message-draw';
+    // $details['url']     = 'javascript:void(0)';
+    // $details['status']  = '';
+    // $details['desc']    = 'nav.sponsored';
+    // $details['class']   = '';
+    // $details['has_sub'] = false;
+    // $details['sub']     = array();
+    // array_push($pages, $details);
 
     return $pages;
 
