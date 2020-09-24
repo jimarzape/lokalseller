@@ -58,6 +58,13 @@ class AddProductController extends MainController
                 array_push($path_img, $path);
             }
 
+            $brand_data     =  BrandModel::where('brand_id', $request->brand_id)->first();
+            $brand_identifier = '';
+            if(!is_null($brand_data))
+            {
+                $brand_identifier = $brand_data->brand_identifier;
+            }
+
             $product_identifier = 'LK-'.Auth::user()->id.date('YmdHis');
 
             $product                        = new ProductModel;
@@ -65,7 +72,7 @@ class AddProductController extends MainController
             $product->product_identifier    = $product_identifier;
             $product->product_name          = $request->product_name;
             $product->product_image         = isset($path_img[0]) ? $path_img[0] : '';
-            $product->brand_identifier      = '';
+            $product->brand_identifier      = $brand_identifier;
             $product->product_timestamp     = date('Y-m-d H:i:s');
             $product->product_price         = $request->product_price;
             $product->brand_id              = $request->brand_id;
