@@ -96,7 +96,7 @@
 									<tr>
 										<th class="text-gold">Size</th>
 										<th class="text-gold">Unit Price</th>
-										<th class="text-gold">Weight</th>
+										<th class="text-gold">Weight (grams)</th>
 										<th class="text-gold">Stocks</th>
 									</tr>
 								</thead>

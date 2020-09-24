@@ -8,6 +8,7 @@ use App\Models\ProductModel;
 use App\Models\BrandModel;
 use App\Models\ProductImage;
 use App\Models\StockModel;
+use App\Models\StockLogs;
 use Crypt;
 use Auth;
 use Validator;
@@ -29,6 +30,7 @@ class ManageProductController extends MainController
                                               ->select('products.*','brands.brand_name',DB::raw('sum(stocks_quantity) as stocks'))
                                               ->groupBy('products.product_id')
                                               ->paginate(20);
+        $this->data['_brand'] = BrandModel::where('owner_id', Auth::user()->id)->orderBy('brand_name')->get();
     	return view('products.manage', $this->data);
     }
 
@@ -169,30 +171,30 @@ class ManageProductController extends MainController
         
         $data = ProductModel::where('product_id', $request->product_id)->first();
 
-        $_sizes = $request->sizes;
-        foreach($_sizes as $key => $size)
-        {
-            if($request->weight[$key] <= 0 && $request->price[$key] <= 0 && $request->stocks[$key] <= 0 && $request->stock_id[$key] != null)
-            {
+        // $_sizes = $request->sizes;
+        // foreach($_sizes as $key => $size)
+        // {
+        //     if($request->weight[$key] <= 0 && $request->price[$key] <= 0 && $request->stocks[$key] <= 0 && $request->stock_id[$key] != null)
+        //     {
 
-            }
-            else
-            {
-                $stocks                     = new StockModel;
-                if($request->stock_id[$key] != null)
-                {
-                    $stocks->exists         = true;
-                    $stocks->id             = $request->stock_id[$key];
-                }
-                $stocks->product_id         = $product->product_id;
-                $stocks->stocks_size        = $size;
-                $stocks->product_identifier = $data->product_identifier;
-                $stocks->stocks_quantity    = $request->stocks[$key];
-                $stocks->stocks_weight      = $request->weight[$key];
-                $stocks->stocks_price       = $request->price[$key];
-                $stocks->save();
-            }
-        }
+        //     }
+        //     else
+        //     {
+        //         $stocks                     = new StockModel;
+        //         if($request->stock_id[$key] != null)
+        //         {
+        //             $stocks->exists         = true;
+        //             $stocks->id             = $request->stock_id[$key];
+        //         }
+        //         $stocks->product_id         = $product->product_id;
+        //         $stocks->stocks_size        = $size;
+        //         $stocks->product_identifier = $data->product_identifier;
+        //         $stocks->stocks_quantity    = $request->stocks[$key];
+        //         $stocks->stocks_weight      = $request->weight[$key];
+        //         $stocks->stocks_price       = $request->price[$key];
+        //         $stocks->save();
+        //     }
+        // }
         return redirect()->route('product.manage');
     }
 
@@ -203,5 +205,67 @@ class ManageProductController extends MainController
         $product->product_id        = $request->id;
         $product->product_archived  = 1;
         $product->save();
+    }
+
+    public function new_stocks(Request $request)
+    {
+        $data['product_id'] = $request->id;
+        return view('products.stocks',$data);
+    }
+
+    public function save_stock(Request $request)
+    {
+        try
+        {
+            $_sizes = $request->sizes;
+            $product_data = ProductModel::where('product_id', $request->product_id)->first();
+            $product_identifier = $product_data->product_identifier;
+            foreach($_sizes as $key => $size)
+            {
+                if($request->weight[$key] <= 0 && $request->price[$key] <= 0 && $request->stocks[$key] <= 0)
+                {
+
+                }
+                else
+                {
+                    $check                      = StockModel::where('product_id', $request->product_id)->where('stocks_size', $size)->first();
+                    $qty                        = $request->stocks[$key];
+                    $stock_id                   = 0;
+                    $stocks                     = new StockModel;
+                    if(!is_null($check))
+                    {
+                        $stock_id               = $check->id;
+                        $stocks->exists         = true;
+                        $stocks->id             = $stock_id;
+                        $qty                    = $check->stocks_quantity + $request->stocks[$key];
+                    }
+                    $stocks->product_id         = $request->product_id;
+                    $stocks->stocks_size        = $size;
+                    $stocks->product_identifier = $product_identifier;
+                    $stocks->stocks_quantity    = $qty;
+                    $stocks->stocks_weight      = $request->weight[$key];
+                    $stocks->stocks_price       = $request->price[$key];
+                    $stocks->save();
+                    if(is_null($check))
+                    {
+                        $stock_id = $stocks->id;
+                    }
+
+                    $logs               = new StockLogs;
+                    $logs->product_id   = $request->product_id;
+                    $logs->stock_id     = $stock_id;
+                    $logs->seller_id    = Auth::user()->id;
+                    $logs->stock_qty    = $request->stocks[$key];
+                    $logs->stock_price  = $request->price[$key];
+                    $logs->stock_weight = $request->weight[$key];
+                    $logs->save();
+                }
+            }
+        }
+        catch(\Exception $e)
+        {
+            return response()->json($e->getMessage(), 500);
+        }
+        
     }
 }

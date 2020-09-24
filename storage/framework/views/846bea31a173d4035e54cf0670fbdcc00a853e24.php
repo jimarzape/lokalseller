@@ -17,6 +17,22 @@
 						<table class="table table-bordered table-condensed">
 							<thead>
 								<tr>
+									<td>
+										<input type="search" placeholder="Search here..." name="" class="form-control">
+									</td>
+									<td>
+										<select class="form-control">
+											<option value="">All</option>
+											<?php $__currentLoopData = $_brand; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+											<option value="<?php echo e($brand->brand_id); ?>"><?php echo e($brand->brand_name); ?></option>
+											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+										</select>
+									</td>
+									<td colspan="4" class="text-right">
+										<button class="btn btn-gold"><i class="mdi mdi-magnify"></i>&nbsp;Search</button>
+									</td>
+								</tr>
+								<tr>
 									<th class="text-gold">Product Name</th>
 									<th class="text-gold">Brand</th>
 									<th class="text-gold">Retail Price</th>
@@ -28,7 +44,7 @@
 							<tbody>
 								<?php $__currentLoopData = $_items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 								<tr>
-									<td class="text-gold"><?php echo e($item->product_name); ?></td>
+									<td class="text-gold"><a href="<?php echo e(route('product.edit',Crypt::encrypt ($item->product_id))); ?>"><?php echo e($item->product_name); ?></a></td>
 									<td class="text-gold"><?php echo e($item->brand_name); ?></td>
 									<td class="text-gold text-right"><?php echo e(number_format($item->product_price, 2)); ?></td>
 									<td class="text-gold text-right">

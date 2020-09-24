@@ -23,7 +23,7 @@
 		<input type="hidden" name="product_id" value="{{$product->product_id}}">
 		<div class="card">
 			<div class="card-header text-gold">
-				Basic Information
+				<h3 class="text-gold">Basic Information</h3>
 			</div>
 			<div class="card-body">
 				<div class="row">
@@ -81,39 +81,35 @@
 			</div>
 		</div>
 		<div class="card">
-			<div class="card-header text-gold">Inventory</div>
+			<div class="card-header text-gold">
+				<h3 class="text-gold">Inventory <button type="button" class="btn btn-gold pull-right btn-modal" data-target="#stock-modal" data-toggle="modal" data-id="{{$product->product_id}}" data-container=".modal-content" data-url="{{route('product.new_stocks')}}">Manage Stocks</button></h3>
+			</div>
 			<div class="card-body">
 				<div class="row"> 
 					<div class="col-md-12">
 						<div class="form-group">
-							<table class="table table-bordered table-condensed">
-								<thead>
-									<tr>
-										<th class="text-gold">Size</th>
-										<th class="text-gold">Unit Price</th>
-										<th class="text-gold">Weight</th>
-										<th class="text-gold">Stocks</th>
-									</tr>
-								</thead>
-								<tbody>
-									@foreach($_attr as $key => $attr)
-									<tr>
-										<td class="text-gold">{{$attr['size']}}</td>
-										<td>
-											<input type="hidden" name="stock_id[]" value="{{$attr['attr_id']}}">
-											<input type="hidden" name="sizes[]" value="{{$attr['size']}}">
-											<input type="number" value="{{$attr['price']}}" name="price[]" class="form-control text-right" step="any" min="0">
-										</td>
-										<td>
-											<input type="number" value="{{$attr['weight']}}" class="form-control text-right" step="any" min="0" name="weight[]">
-										</td>
-										<td>
-											<input type="number" value="{{$attr['stocks']}}" class="form-control text-right" name="stocks[]">
-										</td>
-									</tr>
-									@endforeach
-								</tbody>
-							</table>
+							<div class="reload-content">
+								<table class="table table-bordered table-condensed">
+									<thead>
+										<tr>
+											<th class="text-gold">Size</th>
+											<th class="text-gold">Unit Price</th>
+											<th class="text-gold">Weight (grams)</th>
+											<th class="text-gold">Stocks</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach($_attr as $key => $attr)
+										<tr>
+											<td class="text-gold">{{$attr['size']}}</td>
+											<td class="text-gold text-right">{{number_format($attr['price'], 2)}}</td>
+											<td class="text-gold text-right">{{number_format($attr['weight'], 2)}}</td>
+											<td class="text-gold text-right">{{number_format($attr['stocks'])}}</td>
+										</tr>
+										@endforeach
+									</tbody>
+								</table>
+							</div>
 						</div>	
 					</div>
 				</div>
@@ -124,6 +120,13 @@
 			</div>
 		</div>
 	</form>
+</div>
+<div id="stock-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            
+        </div>
+    </div>
 </div>
 @endsection
 
@@ -146,4 +149,5 @@
 		$('.text-html5-editor').wysihtml5();
 	});
 </script>
+<script type="text/javascript" src="/js/product-edit.js?{{time()}}"></script>
 @endsection

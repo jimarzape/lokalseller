@@ -35,6 +35,8 @@ Route::post('/products/status', 'Product\ManageProductController@status')->name(
 Route::get('/products/edit/{id}', 'Product\ManageProductController@edit')->name('product.edit');
 Route::post('/products/update', 'Product\ManageProductController@update')->name('product.update');
 Route::post('/products/archived', 'Product\ManageProductController@archived')->name('product.archived');
+Route::post('/products/stock/new', 'Product\ManageProductController@new_stocks')->name('product.new_stocks');
+Route::post('/products/stock/save', 'Product\ManageProductController@save_stock')->name('product.save_stock');
 
 Route::get('/orders', 'Orders\OrdersController@index')->name('orders.orders');
 Route::get('/orders/view/{id}', 'Orders\OrdersController@view')->name('orders.view');
@@ -47,6 +49,8 @@ Route::get('/test/assign/stock', 'TestController@assign_stocks');
 Route::get('/test/assign/image', 'TestController@assign_image');
 Route::get('/test/assign/order', 'TestController@assign_order');
 Route::get('/test/com', 'TestController@com');
+Route::get('/test/inventory', 'TestController@inventory');
+
 
 Route::post('/register/city', 'TestController@load_city')->name('reg.city');
 Route::post('/register/brgy', 'TestController@load_brgy')->name('reg.brgy');

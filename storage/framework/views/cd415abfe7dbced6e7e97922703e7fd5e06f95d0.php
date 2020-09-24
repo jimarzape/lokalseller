@@ -22,7 +22,7 @@
 		<input type="hidden" name="product_id" value="<?php echo e($product->product_id); ?>">
 		<div class="card">
 			<div class="card-header text-gold">
-				Basic Information
+				<h3 class="text-gold">Basic Information</h3>
 			</div>
 			<div class="card-body">
 				<div class="row">
@@ -80,39 +80,35 @@
 			</div>
 		</div>
 		<div class="card">
-			<div class="card-header text-gold">Inventory</div>
+			<div class="card-header text-gold">
+				<h3 class="text-gold">Inventory <button type="button" class="btn btn-gold pull-right btn-modal" data-target="#stock-modal" data-toggle="modal" data-id="<?php echo e($product->product_id); ?>" data-container=".modal-content" data-url="<?php echo e(route('product.new_stocks')); ?>">Manage Stocks</button></h3>
+			</div>
 			<div class="card-body">
 				<div class="row"> 
 					<div class="col-md-12">
 						<div class="form-group">
-							<table class="table table-bordered table-condensed">
-								<thead>
-									<tr>
-										<th class="text-gold">Size</th>
-										<th class="text-gold">Unit Price</th>
-										<th class="text-gold">Weight</th>
-										<th class="text-gold">Stocks</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php $__currentLoopData = $_attr; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $attr): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-									<tr>
-										<td class="text-gold"><?php echo e($attr['size']); ?></td>
-										<td>
-											<input type="hidden" name="stock_id[]" value="<?php echo e($attr['attr_id']); ?>">
-											<input type="hidden" name="sizes[]" value="<?php echo e($attr['size']); ?>">
-											<input type="number" value="<?php echo e($attr['price']); ?>" name="price[]" class="form-control text-right" step="any" min="0">
-										</td>
-										<td>
-											<input type="number" value="<?php echo e($attr['weight']); ?>" class="form-control text-right" step="any" min="0" name="weight[]">
-										</td>
-										<td>
-											<input type="number" value="<?php echo e($attr['stocks']); ?>" class="form-control text-right" name="stocks[]">
-										</td>
-									</tr>
-									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-								</tbody>
-							</table>
+							<div class="reload-content">
+								<table class="table table-bordered table-condensed">
+									<thead>
+										<tr>
+											<th class="text-gold">Size</th>
+											<th class="text-gold">Unit Price</th>
+											<th class="text-gold">Weight (grams)</th>
+											<th class="text-gold">Stocks</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php $__currentLoopData = $_attr; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $attr): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+										<tr>
+											<td class="text-gold"><?php echo e($attr['size']); ?></td>
+											<td class="text-gold text-right"><?php echo e(number_format($attr['price'], 2)); ?></td>
+											<td class="text-gold text-right"><?php echo e(number_format($attr['weight'], 2)); ?></td>
+											<td class="text-gold text-right"><?php echo e(number_format($attr['stocks'])); ?></td>
+										</tr>
+										<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+									</tbody>
+								</table>
+							</div>
 						</div>	
 					</div>
 				</div>
@@ -123,6 +119,13 @@
 			</div>
 		</div>
 	</form>
+</div>
+<div id="stock-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            
+        </div>
+    </div>
 </div>
 <?php $__env->stopSection(); ?>
 
@@ -145,5 +148,6 @@
 		$('.text-html5-editor').wysihtml5();
 	});
 </script>
+<script type="text/javascript" src="/js/product-edit.js?<?php echo e(time()); ?>"></script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\lokalseller\resources\views/products/edit.blade.php ENDPATH**/ ?>
