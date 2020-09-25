@@ -52,7 +52,7 @@ class OrdersController extends MainController
     	{
     		if($request->order_status != 'all')
     		{
-    			$orders = $orders->where('delivery_status', $request->order_status);
+    			$orders = $orders->where('seller_delivery_status', $request->order_status);
     		}
     	}
 
@@ -60,7 +60,7 @@ class OrdersController extends MainController
     	{
     		if($request->order_status != '')
     		{
-    			$orders = $orders->where('order_number','LIKE', '%'.$request->order_no.'%');
+    			$orders = $orders->where('seller_order.order_number','LIKE', '%'.$request->order_no.'%');
     		}
     	}
 
@@ -94,18 +94,24 @@ class OrdersController extends MainController
     {
         try
         {
-            $order_id       = Crypt::decrypt($request->order_id);
-            $order          = new OrderModel;
-            $order->exists  = true;
-            $order->id      = $order_id;
-            $order->delivery_status = $request->status;
+            $order_id                       = Crypt::decrypt($request->order_id);
+            $order                          = new SellerOrder;
+            $order->exists                  = true;
+            $order->seller_order_id         = $order_id;
+            $order->seller_delivery_status  = $request->status;
             $order->save();
 
-
-            $details = OrderModel::where('id', $order_id)->first();
-
             $update['delivery_status'] =$request->status;
-            CartModel::where('cart_order_number', $details->order_number)->update($update);
+
+
+            $details = SellerOrderItems::select('cart_id')->where('seller_order_id', 3)->get()->toArray();
+            $cart_id = array();
+            foreach($details as $det)
+            {
+                array_push($cart_id, $det['cart_id']);
+            }
+
+            CartModel::whereIn('cart_id', $cart_id)->update($update);
 
             $status = OrderStatus::where('id', $request->status)->first();
 
@@ -127,14 +133,14 @@ class OrdersController extends MainController
     {
         try
         {
-            $order_id               = Crypt::decrypt($request->order_id);
-            $pouch                  = PouchModel::where('id', $request->pouch_id)->first();
-            $order                  = new OrderModel;
-            $order->exists          = true;
-            $order->id              = $order_id;
-            $order->pouch_id        = $request->pouch_id;
-            $order->pouch_qty       = $request->pouch_qty;
-            $order->pouch_amount    = $pouch->pouch_price;
+            $order_id                   = Crypt::decrypt($request->order_id);
+            $pouch                      = PouchModel::where('id', $request->pouch_id)->first();
+            $order                      = new SellerOrder;
+            $order->exists              = true;
+            $order->seller_order_id     = $order_id;
+            $order->seller_pouch_id     = $request->pouch_id;
+            $order->seller_pouch_qty    = $request->pouch_qty;
+            $order->seller_pouch_amount = $pouch->pouch_price;
             $order->save();
 
             $message['message'] = 'Pouch has been updated';
@@ -152,14 +158,15 @@ class OrdersController extends MainController
 
         $order_id = Crypt::decrypt($order_id);
         // dd($order_id);
-        $data['order'] = OrderModel::select('*','orders.id as order_id')
-                                         ->where('orders.id', $order_id)
+        $data['order'] = SellerOrder::select('*','seller_order.seller_id as seller_org_id','orders.id as order_id')
+                                         ->where('seller_order_id', $order_id)
+                                         ->leftjoin('orders','orders.id','seller_order.order_id')
                                          ->leftjoin('users','users.userToken','orders.user_token')
                                          ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
                                          ->leftjoin('delivery_types','delivery_types.id','orders.order_delivery_type')
                                          ->first();
         // dd($order_id);
-        $data['sellers']  = Sellers::where('sellers.id', $data['order']->seller_id)
+        $data['sellers']  = Sellers::where('sellers.id', $data['order']->seller_org_id)
                                     ->leftjoin('refprovince','refprovince.provCode','sellers.province')
                                     ->leftjoin('refcitymun','refcitymun.citymunCode','sellers.city')
                                     ->leftjoin('refbrgy','refbrgy.brgyCode','sellers.brgy')
@@ -167,7 +174,7 @@ class OrdersController extends MainController
         // dd($data);
         $pdf = PDF::loadView('orders.print',$data);
 
-        return $pdf->stream(time().'.pdf');
+        return $pdf->stream($data['order']->order_number.'.pdf');
     }
 
 }

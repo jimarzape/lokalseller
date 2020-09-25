@@ -70,7 +70,7 @@
 								<td><?php echo e($orders->status_name); ?></td>
 								<td class="text-center">
 									<a href="<?php echo e(route('orders.view', Crypt::encrypt($orders->order_id))); ?>" title="view details"><i class="mdi mdi-pencil-box"></i></a>
-									<?php if($orders->delivery_status == 2): ?>
+									<?php if($orders->seller_delivery_status == 2): ?>
 									<a href="<?php echo e(route('orders.print', Crypt::encrypt($orders->order_id))); ?>" class="pull-right btn-print-pdf" title="print receipt"><i class="mdi mdi-printer"></i></a>
 									<?php endif; ?>
 								</td>

@@ -140,6 +140,22 @@ class TestController extends Controller
         SellerOrder::truncate();
         StockLogs::truncate();
         SellerOrderItems::truncate();
+
+        $_items = ProductModel::select('stocks.*','products.seller_id')->leftjoin('stocks','stocks.product_id','products.product_id')->get()->toArray();
+        // dd($_items);
+        foreach($_items as $items)
+        {
+            $logs               = new StockLogs;
+            $logs->product_id   = Self::null_zero($items['product_id']);
+            $logs->stock_id     = Self::null_zero($items['id']);
+            $logs->seller_id    = Self::null_zero($items['seller_id']);
+            $logs->stock_qty    = Self::null_zero($items['stocks_quantity']);
+            $logs->stock_price  = Self::null_zero($items['stocks_price']);
+            $logs->stock_weight = Self::null_zero($items['stocks_weight']);
+            $logs->save();
+        }
+
+
         $_order = OrderModel::whereIn('delivery_status', array(1,2,3,4,7,8))->get();
         foreach ($_order as $order) {
             $order_id       = $order->id;
@@ -251,5 +267,20 @@ class TestController extends Controller
             $variable = 0;
         }
         return $variable;
+    }
+
+
+    public function index()
+    {
+        $details = SellerOrderItems::select('cart_id')->where('seller_order_id', 3)->get()->toArray();
+        $cart_id = array();
+        foreach($details as $det)
+        {
+            array_push($cart_id, $det['cart_id']);
+        }
+
+        $cart = CartModel::whereIn('cart_id', $cart_id)->get();
+        dd($cart);
+
     }
 }

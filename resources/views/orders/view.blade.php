@@ -5,7 +5,7 @@
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-body">
-					<h5 class="text-gold">{{$order->order_number}} @if($order->delivery_status == 2)<a href="{{route('orders.print', Crypt::encrypt($order->order_id))}}" class="pull-right f24 btn-print-pdf"><i class="mdi mdi-printer"></i></a>@endif</h5>
+					<h5 class="text-gold">{{$order->order_number}} @if($order->seller_delivery_status == 2)<a href="{{route('orders.print', Crypt::encrypt($order->seller_order_id))}}" class="pull-right f24 btn-print-pdf"><i class="mdi mdi-printer"></i></a>@endif</h5>
 				</div>
 			</div>
 		</div>
@@ -80,14 +80,14 @@
 				<div class="card-body">
 					<form class="row form-submit" action="{{route('orders.status')}}" method="POST">
 						@csrf
-						<input type="hidden" value="{{Crypt::encrypt($order->order_id)}}" class="order_id" name="order_id">
+						<input type="hidden" value="{{Crypt::encrypt($order->seller_order_id)}}" class="order_id" name="order_id">
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="text-gold">Status</label>
 								<select class="form-control" name="status" required>
 									<option value="">Select Status</option>
 									@foreach($_status as $status)
-									<option value="{{$status->id}}" {{$status->id == $order->delivery_status  ? 'selected="selected"' : ''}}>{{$status->status_name}}</option>
+									<option value="{{$status->id}}" {{$status->id == $order->seller_delivery_status  ? 'selected="selected"' : ''}}>{{$status->status_name}}</option>
 									@endforeach
 								</select>
 							</div>
@@ -108,14 +108,14 @@
 				<form class="card-body form-submit" action="{{route('orders.pouch')}}" method="POST">
 					<div class="row">
 						@csrf
-						<input type="hidden" value="{{Crypt::encrypt($order->order_id)}}" name="order_id">
+						<input type="hidden" value="{{Crypt::encrypt($order->seller_order_id)}}" name="order_id">
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="text-gold">Pouch Size</label>
 								<select class="form-control pouch-size pouch-change" name="pouch_id" required>
 									<option value="">Select Size</option>
 									@foreach($_pouches as $pouch)
-									<option value="{{$pouch->id}}" {{$order->pouch_id == $pouch->id ? 'selected="selected"' : ''}} data-amount={{$pouch->pouch_price}}>{{$pouch->pouch_size}}</option>
+									<option value="{{$pouch->id}}" {{$order->pouch_id == $pouch->seller_pouch_id ? 'selected="selected"' : ''}} data-amount={{$pouch->pouch_price}}>{{$pouch->pouch_size}}</option>
 									@endforeach
 								</select>
 							</div>
@@ -123,13 +123,13 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label class="text-gold">Quantity</label>
-								<input type="number" name="pouch_qty" class="form-control text-right pouch-qty pouch-change" value="{{$order->pouch_qty}}" placeholder="0" min="1" required>
+								<input type="number" name="pouch_qty" class="form-control text-right pouch-qty pouch-change" value="{{$order->seller_pouch_qty}}" placeholder="0" min="1" required>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								<label class="text-gold">Pouch Amount</label>
-								<input type="text" readonly class="form-control text-right pouch-total text-gold" value="{{number_format($order->pouch_amount * $order->pouch_qty, 2)}}">
+								<input type="text" readonly class="form-control text-right pouch-total text-gold" value="{{number_format($order->seller_pouch_amount * $order->seller_pouch_qty, 2)}}">
 							</div>
 						</div>
 						<div class="col-md-12">

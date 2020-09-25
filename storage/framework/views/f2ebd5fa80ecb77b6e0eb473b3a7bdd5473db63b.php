@@ -4,7 +4,7 @@
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-body">
-					<h5 class="text-gold"><?php echo e($order->order_number); ?> <?php if($order->delivery_status == 2): ?><a href="<?php echo e(route('orders.print', Crypt::encrypt($order->order_id))); ?>" class="pull-right f24 btn-print-pdf"><i class="mdi mdi-printer"></i></a><?php endif; ?></h5>
+					<h5 class="text-gold"><?php echo e($order->order_number); ?> <?php if($order->seller_delivery_status == 2): ?><a href="<?php echo e(route('orders.print', Crypt::encrypt($order->seller_order_id))); ?>" class="pull-right f24 btn-print-pdf"><i class="mdi mdi-printer"></i></a><?php endif; ?></h5>
 				</div>
 			</div>
 		</div>
@@ -79,14 +79,14 @@
 				<div class="card-body">
 					<form class="row form-submit" action="<?php echo e(route('orders.status')); ?>" method="POST">
 						<?php echo csrf_field(); ?>
-						<input type="hidden" value="<?php echo e(Crypt::encrypt($order->order_id)); ?>" class="order_id" name="order_id">
+						<input type="hidden" value="<?php echo e(Crypt::encrypt($order->seller_order_id)); ?>" class="order_id" name="order_id">
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="text-gold">Status</label>
 								<select class="form-control" name="status" required>
 									<option value="">Select Status</option>
 									<?php $__currentLoopData = $_status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-									<option value="<?php echo e($status->id); ?>" <?php echo e($status->id == $order->delivery_status  ? 'selected="selected"' : ''); ?>><?php echo e($status->status_name); ?></option>
+									<option value="<?php echo e($status->id); ?>" <?php echo e($status->id == $order->seller_delivery_status  ? 'selected="selected"' : ''); ?>><?php echo e($status->status_name); ?></option>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 								</select>
 							</div>
@@ -107,14 +107,14 @@
 				<form class="card-body form-submit" action="<?php echo e(route('orders.pouch')); ?>" method="POST">
 					<div class="row">
 						<?php echo csrf_field(); ?>
-						<input type="hidden" value="<?php echo e(Crypt::encrypt($order->order_id)); ?>" name="order_id">
+						<input type="hidden" value="<?php echo e(Crypt::encrypt($order->seller_order_id)); ?>" name="order_id">
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="text-gold">Pouch Size</label>
 								<select class="form-control pouch-size pouch-change" name="pouch_id" required>
 									<option value="">Select Size</option>
 									<?php $__currentLoopData = $_pouches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pouch): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-									<option value="<?php echo e($pouch->id); ?>" <?php echo e($order->pouch_id == $pouch->id ? 'selected="selected"' : ''); ?> data-amount=<?php echo e($pouch->pouch_price); ?>><?php echo e($pouch->pouch_size); ?></option>
+									<option value="<?php echo e($pouch->id); ?>" <?php echo e($order->pouch_id == $pouch->seller_pouch_id ? 'selected="selected"' : ''); ?> data-amount=<?php echo e($pouch->pouch_price); ?>><?php echo e($pouch->pouch_size); ?></option>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 								</select>
 							</div>
@@ -122,13 +122,13 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label class="text-gold">Quantity</label>
-								<input type="number" name="pouch_qty" class="form-control text-right pouch-qty pouch-change" value="<?php echo e($order->pouch_qty); ?>" placeholder="0" min="1" required>
+								<input type="number" name="pouch_qty" class="form-control text-right pouch-qty pouch-change" value="<?php echo e($order->seller_pouch_qty); ?>" placeholder="0" min="1" required>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								<label class="text-gold">Pouch Amount</label>
-								<input type="text" readonly class="form-control text-right pouch-total text-gold" value="<?php echo e(number_format($order->pouch_amount * $order->pouch_qty, 2)); ?>">
+								<input type="text" readonly class="form-control text-right pouch-total text-gold" value="<?php echo e(number_format($order->seller_pouch_amount * $order->seller_pouch_qty, 2)); ?>">
 							</div>
 						</div>
 						<div class="col-md-12">

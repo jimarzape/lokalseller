@@ -245,6 +245,12 @@ class ManageProductController extends MainController
 
     public function stock_logs($product_id)
     {
-
+        $product_id = Crypt::decrypt($product_id);
+        $this->data['product'] = ProductModel::where('product_id',$product_id)->first();
+        $this->data['_logs'] = StockLogs::where('product_stock_logs.product_id',$product_id)
+                                        ->leftjoin('stocks','stocks.id','product_stock_logs.stock_id')
+                                        ->orderBy('stock_log_id','desc')
+                                        ->paginate(20);
+        return view('products.logs', $this->data);
     }
 }

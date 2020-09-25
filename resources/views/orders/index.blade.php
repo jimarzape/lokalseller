@@ -71,7 +71,7 @@
 								<td>{{$orders->status_name}}</td>
 								<td class="text-center">
 									<a href="{{route('orders.view', Crypt::encrypt($orders->order_id))}}" title="view details"><i class="mdi mdi-pencil-box"></i></a>
-									@if($orders->delivery_status == 2)
+									@if($orders->seller_delivery_status == 2)
 									<a href="{{route('orders.print', Crypt::encrypt($orders->order_id))}}" class="pull-right btn-print-pdf" title="print receipt"><i class="mdi mdi-printer"></i></a>
 									@endif
 								</td>

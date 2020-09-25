@@ -46,6 +46,7 @@ Route::post('/orders/status', 'Orders\OrdersController@update_status')->name('or
 Route::post('/orders/pouch', 'Orders\OrdersController@update_pouch')->name('orders.pouch');
 Route::get('/orders/print/{id}', 'Orders\OrdersController@print')->name('orders.print');
 
+Route::get('/test', 'TestController@index');
 Route::get('/test/assign', 'TestController@assign_brand');
 Route::get('/test/assign/stock', 'TestController@assign_stocks');
 Route::get('/test/assign/image', 'TestController@assign_image');
