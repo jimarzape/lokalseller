@@ -131,6 +131,19 @@ class TestController extends Controller
             $update->save();
         }
 
+        $_seller = SellerOrder::get();
+        foreach($_seller as $order)
+        {
+            $com = 5;
+            $share = $order->seller_total * ($com / 100);
+            $update = new SellerOrder;
+            $update->exists = true;
+            $update->seller_order_id = $order->seller_order_id;
+            $update->seller_share_rate = $com;
+            $update->seller_share = $share;
+            $update->save();
+        }
+
         return 'done';
     }
 
