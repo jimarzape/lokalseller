@@ -82,7 +82,12 @@
 		</div>
 		<div class="card">
 			<div class="card-header text-gold">
-				<h3 class="text-gold">Inventory <button type="button" class="btn btn-gold pull-right btn-modal" data-target="#stock-modal" data-toggle="modal" data-id="{{$product->product_id}}" data-container=".modal-content" data-url="{{route('product.new_stocks')}}">Manage Stocks</button></h3>
+				<h3 class="text-gold">
+					<span>Inventory</span>
+
+					<button type="button" class="btn btn-gold pull-right btn-modal ml-5" data-target="#stock-modal" data-toggle="modal" data-id="{{$product->product_id}}" data-container=".modal-content" data-url="{{route('product.new_stocks')}}">Manage Stocks</button>
+					<a href="{{route('product.stock.logs', Crypt::encrypt($product->product_id))}}" class="btn btn-gold pull-right ">View Stock Logs</a> 
+				</h3>
 			</div>
 			<div class="card-body">
 				<div class="row"> 

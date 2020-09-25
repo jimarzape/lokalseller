@@ -66,7 +66,7 @@
 								<td><?php echo e(date_norm(order_date($orders->order_date),'M d, y h:i a')); ?></td>
 								<td><?php echo e($orders->payment_method); ?></td>
 								<td><?php echo e($orders->delivery_type); ?></td>
-								<td class="text-right"><?php echo e(number_format($orders->order_amount_due, 2)); ?></td>
+								<td class="text-right"><?php echo e(number_format($orders->seller_total, 2)); ?></td>
 								<td><?php echo e($orders->status_name); ?></td>
 								<td class="text-center">
 									<a href="<?php echo e(route('orders.view', Crypt::encrypt($orders->order_id))); ?>" title="view details"><i class="mdi mdi-pencil-box"></i></a>

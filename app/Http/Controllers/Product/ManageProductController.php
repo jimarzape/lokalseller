@@ -167,34 +167,8 @@ class ManageProductController extends MainController
         $product->product_desc          = $request->product_desc;
         $product->seller_id             = Auth::user()->id;
         $product->save();
-
         
         $data = ProductModel::where('product_id', $request->product_id)->first();
-
-        // $_sizes = $request->sizes;
-        // foreach($_sizes as $key => $size)
-        // {
-        //     if($request->weight[$key] <= 0 && $request->price[$key] <= 0 && $request->stocks[$key] <= 0 && $request->stock_id[$key] != null)
-        //     {
-
-        //     }
-        //     else
-        //     {
-        //         $stocks                     = new StockModel;
-        //         if($request->stock_id[$key] != null)
-        //         {
-        //             $stocks->exists         = true;
-        //             $stocks->id             = $request->stock_id[$key];
-        //         }
-        //         $stocks->product_id         = $product->product_id;
-        //         $stocks->stocks_size        = $size;
-        //         $stocks->product_identifier = $data->product_identifier;
-        //         $stocks->stocks_quantity    = $request->stocks[$key];
-        //         $stocks->stocks_weight      = $request->weight[$key];
-        //         $stocks->stocks_price       = $request->price[$key];
-        //         $stocks->save();
-        //     }
-        // }
         return redirect()->route('product.manage');
     }
 
@@ -267,5 +241,10 @@ class ManageProductController extends MainController
             return response()->json($e->getMessage(), 500);
         }
         
+    }
+
+    public function stock_logs($product_id)
+    {
+
     }
 }

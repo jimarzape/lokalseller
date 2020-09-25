@@ -37,6 +37,8 @@ Route::post('/products/update', 'Product\ManageProductController@update')->name(
 Route::post('/products/archived', 'Product\ManageProductController@archived')->name('product.archived');
 Route::post('/products/stock/new', 'Product\ManageProductController@new_stocks')->name('product.new_stocks');
 Route::post('/products/stock/save', 'Product\ManageProductController@save_stock')->name('product.save_stock');
+Route::get('/products/stock/logs/{id}', 'Product\ManageProductController@stock_logs')->name('product.stock.logs');
+
 
 Route::get('/orders', 'Orders\OrdersController@index')->name('orders.orders');
 Route::get('/orders/view/{id}', 'Orders\OrdersController@view')->name('orders.view');

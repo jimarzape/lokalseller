@@ -16,7 +16,6 @@ class AddProductController extends MainController
 {
     public function __construct()
     {
-        
         parent::__construct();
     	$this->data['_pages'] = pages('Products','Add Products');
     }
