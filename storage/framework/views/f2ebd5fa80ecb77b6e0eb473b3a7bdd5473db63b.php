@@ -51,7 +51,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<p class="text-gold"><?php echo e($order->userFullName); ?></p>
-							<p class="text-gold"><?php echo e($order->userShippingAddress); ?></p>
+							<p class="text-gold"><?php echo e(strtoupper($order->userShippingAddress.', '.$order->userBarangay.', '.$order->userCityMunicipality.', '.$order->userProvince)); ?></p>
 						</div>
 					</div>
 				</div>

@@ -52,7 +52,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<p class="text-gold">{{$order->userFullName}}</p>
-							<p class="text-gold">{{$order->userShippingAddress}}</p>
+							<p class="text-gold">{{strtoupper($order->userShippingAddress.', '.$order->userBarangay.', '.$order->userCityMunicipality.', '.$order->userProvince)}}</p>
 						</div>
 					</div>
 				</div>
