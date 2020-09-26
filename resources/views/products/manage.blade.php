@@ -18,22 +18,6 @@
 						<table class="table table-bordered table-condensed">
 							<thead>
 								<tr>
-									<td>
-										<input type="search" placeholder="Search here..." name="" class="form-control">
-									</td>
-									<td>
-										<select class="form-control">
-											<option value="">All</option>
-											@foreach($_brand as $brand)
-											<option value="{{$brand->brand_id}}">{{$brand->brand_name}}</option>
-											@endforeach
-										</select>
-									</td>
-									<td colspan="4" class="text-right">
-										<button class="btn btn-gold"><i class="mdi mdi-magnify"></i>&nbsp;Search</button>
-									</td>
-								</tr>
-								<tr>
 									<th class="text-gold">Product Name</th>
 									<th class="text-gold">Brand</th>
 									<th class="text-gold">Retail Price</th>
@@ -41,6 +25,25 @@
 									<th class="text-gold text-center">Active</th>
 									<th class="text-gold text-center">Actions</th>
 								</tr>
+								<form action="{{route('product.manage')}}" method="GET">
+									<tr>
+										<th>
+											<input type="search" placeholder="Search here..." name="search" value="{{Request::input('search')}}" class="form-control">
+										</th>
+										<th>
+											<select class="form-control" name="brand">
+												<option value="all" {{Request::input('brand') == 'all' ? 'selected="selected"' : ''}}>All</option>
+												@foreach($_brand as $brand)
+												<option value="{{$brand->brand_id}}" {{Request::input('brand') == $brand->brand_id ? 'selected="selected"' : ''}}>{{$brand->brand_name}}</option>
+												@endforeach
+											</select>
+										</th>
+										<th colspan="4" class="text-right">
+											<button class="btn btn-gold" type="submit"><i class="mdi mdi-magnify"></i>&nbsp;Search</button>
+										</th>
+									</tr>
+								</form>
+								
 							</thead>
 							<tbody>
 								@foreach($_items as $item)

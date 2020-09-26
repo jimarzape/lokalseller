@@ -33,9 +33,9 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="col-md-12">
-							<p><span>Sub Total</span><span class="text-gold pull-right"><?php echo e(number_format($order->order_subtotal, 2)); ?></span></p>
-							<p><span>Shipping Fee</span><span class="text-gold pull-right"><?php echo e(number_format($order->order_delivery_fee, 2)); ?></span></p>
-							<p><span>Grand Total</span><span class="text-gold pull-right"><?php echo e(number_format($order->order_amount_due, 2)); ?></span></p>
+							<p><span>Sub Total</span><span class="text-gold pull-right"><?php echo e(number_format($order->seller_sub_total, 2)); ?></span></p>
+							<p><span>Shipping Fee</span><span class="text-gold pull-right"><?php echo e(number_format($order->seller_delivery_fee, 2)); ?></span></p>
+							<p><span>Grand Total</span><span class="text-gold pull-right"><?php echo e(number_format($order->seller_total, 2)); ?></span></p>
 							<p><span>Courrier</span><span class="text-gold pull-right"><?php echo e($order->delivery_type); ?></span></p>
 						</div>
 					</div>
@@ -65,7 +65,7 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="col-md-12">
-							<p><span>Lokal Share (<?php echo e(number_format($order->lokal_com, 2)); ?>%)</span><span class="text-gold pull-right"><?php echo e(number_format($order->lokal_com_amount, 2)); ?></span></p>
+							<p><span>Lokal Share (<?php echo e(number_format($order->seller_share_rate, 2)); ?>%)</span><span class="text-gold pull-right"><?php echo e(number_format($order->seller_share, 2)); ?></span></p>
 						</div>
 					</div>
 				</div>

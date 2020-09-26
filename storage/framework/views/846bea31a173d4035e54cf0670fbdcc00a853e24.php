@@ -17,22 +17,6 @@
 						<table class="table table-bordered table-condensed">
 							<thead>
 								<tr>
-									<td>
-										<input type="search" placeholder="Search here..." name="" class="form-control">
-									</td>
-									<td>
-										<select class="form-control">
-											<option value="">All</option>
-											<?php $__currentLoopData = $_brand; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-											<option value="<?php echo e($brand->brand_id); ?>"><?php echo e($brand->brand_name); ?></option>
-											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-										</select>
-									</td>
-									<td colspan="4" class="text-right">
-										<button class="btn btn-gold"><i class="mdi mdi-magnify"></i>&nbsp;Search</button>
-									</td>
-								</tr>
-								<tr>
 									<th class="text-gold">Product Name</th>
 									<th class="text-gold">Brand</th>
 									<th class="text-gold">Retail Price</th>
@@ -40,6 +24,25 @@
 									<th class="text-gold text-center">Active</th>
 									<th class="text-gold text-center">Actions</th>
 								</tr>
+								<form action="<?php echo e(route('product.manage')); ?>" method="GET">
+									<tr>
+										<th>
+											<input type="search" placeholder="Search here..." name="search" value="<?php echo e(Request::input('search')); ?>" class="form-control">
+										</th>
+										<th>
+											<select class="form-control" name="brand">
+												<option value="all" <?php echo e(Request::input('brand') == 'all' ? 'selected="selected"' : ''); ?>>All</option>
+												<?php $__currentLoopData = $_brand; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+												<option value="<?php echo e($brand->brand_id); ?>" <?php echo e(Request::input('brand') == $brand->brand_id ? 'selected="selected"' : ''); ?>><?php echo e($brand->brand_name); ?></option>
+												<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+											</select>
+										</th>
+										<th colspan="4" class="text-right">
+											<button class="btn btn-gold" type="submit"><i class="mdi mdi-magnify"></i>&nbsp;Search</button>
+										</th>
+									</tr>
+								</form>
+								
 							</thead>
 							<tbody>
 								<?php $__currentLoopData = $_items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>

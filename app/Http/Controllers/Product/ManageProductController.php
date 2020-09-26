@@ -23,13 +23,26 @@ class ManageProductController extends MainController
     	$this->data['_pages'] = pages('Products','Manage Products');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-    	$this->data['_items'] = ProductModel::brands()->stocks()
-                                              ->details(Auth::user()->id)
-                                              ->select('products.*','brands.brand_name',DB::raw('sum(stocks_quantity) as stocks'))
-                                              ->groupBy('products.product_id')
-                                              ->paginate(20);
+        $_items = ProductModel::brands()->stocks()
+                              ->details(Auth::user()->id);
+        if($request->has('search'))
+        {
+            $_items = $_items->where('products.product_name','like','%'.$request->search.'%');
+        }
+        if($request->has('brand'))
+        {
+            if($request->brand != 'all')
+            {
+                $_items = $_items->where('products.brand_id', $request->brand);
+            }
+        }
+        $_items = $_items->select('products.*','brands.brand_name',DB::raw('sum(stocks_quantity) as stocks'))
+                            ->groupBy('products.product_id')
+                            ->paginate(20);
+
+        $this->data['_items'] = $_items;
         $this->data['_brand'] = BrandModel::where('owner_id', Auth::user()->id)->orderBy('brand_name')->get();
     	return view('products.manage', $this->data);
     }
