@@ -154,20 +154,32 @@ class TestController extends Controller
         StockLogs::truncate();
         SellerOrderItems::truncate();
 
-        $_items = ProductModel::select('stocks.*','products.seller_id')->leftjoin('stocks','stocks.product_id','products.product_id')->get()->toArray();
+        $_items = ProductModel::select('stocks.*','products.seller_id','products.product_id')
+                                ->leftjoin('stocks','stocks.product_id','products.product_id')
+                                ->get()->toArray();
         // dd($_items);
+        $zero_stock = array();
         foreach($_items as $items)
         {
-            $logs               = new StockLogs;
-            $logs->product_id   = Self::null_zero($items['product_id']);
-            $logs->stock_id     = Self::null_zero($items['id']);
-            $logs->seller_id    = Self::null_zero($items['seller_id']);
-            $logs->stock_qty    = Self::null_zero($items['stocks_quantity']);
-            $logs->stock_price  = Self::null_zero($items['stocks_price']);
-            $logs->stock_weight = Self::null_zero($items['stocks_weight']);
-            $logs->save();
+            if(is_null($items['id']))
+            {
+                // dd($items);
+                array_push($zero_stock, $items['product_id']);
+            }   
+            else
+            {
+                $logs               = new StockLogs;
+                $logs->product_id   = Self::null_zero($items['product_id']);
+                $logs->stock_id     = Self::null_zero($items['id']);
+                $logs->seller_id    = Self::null_zero($items['seller_id']);
+                $logs->stock_qty    = Self::null_zero($items['stocks_quantity']);
+                $logs->stock_price  = Self::null_zero($items['stocks_price']);
+                $logs->stock_weight = Self::null_zero($items['stocks_weight']);
+                $logs->save();
+            }
+            
         }
-
+        dd(implode(',', $zero_stock));
 
         $_order = OrderModel::whereIn('delivery_status', array(1,2,3,4,7,8))->get();
         foreach ($_order as $order) {
@@ -275,25 +287,126 @@ class TestController extends Controller
 
     public function null_zero($variable)
     {
-        if(is_null($variable))
-        {
-            $variable = 0;
-        }
+        // if(is_null($variable))
+        // {
+        //     $variable = 0;
+        // }
         return $variable;
     }
 
 
+    public function mrspeedy()
+    {
+        $order_id = 159;
+        $order_data = SellerOrder::single($order_id)->first();
+        dd($order_data);
+        $order = SellerOrder::select('*','seller_order.seller_id as seller_org_id','orders.id as order_id')
+                                         ->where('seller_order_id', $order_id)
+                                         ->leftjoin('orders','orders.id','seller_order.order_id')
+                                         ->leftjoin('users','users.userToken','orders.user_token')
+                                         ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
+                                         ->leftjoin('delivery_types','delivery_types.id','orders.order_delivery_type')
+                                         ->first();
+        // dd($order_id);
+        $sellers  = Sellers::where('sellers.id', $order->seller_org_id)
+                                    ->leftjoin('refprovince','refprovince.provCode','sellers.province')
+                                    ->leftjoin('refcitymun','refcitymun.citymunCode','sellers.city')
+                                    ->leftjoin('refbrgy','refbrgy.brgyCode','sellers.brgy')
+                                    ->first();
+
+        $_items     = SellerOrderItems::details($order_id)->get();
+        // dd($_items);
+        $packages   = array();
+        $weight     = 0;
+        foreach($_items as $items)
+        {
+            $temp                           = array();
+            $temp['ware_code']              = $items->brand_identifier;
+            $temp['description']            = $items->product_name.' ('.$items->size.')';
+            $temp['items_count']            = $items->order_qty;
+            $temp['item_payment_amount']    = $items->sold_price;
+            // $temp['cod']          = false;
+            array_push($packages, $temp);
+
+            $weight += $items->weight * $items->order_qty;
+        }
+        // dd($_items);
+
+        $seller_address = strtoupper($sellers->street_address.', '.$sellers->brgyDesc.', '.$sellers->citymunDesc.', '.$sellers->provDesc);
+        // $customer_address = strtoupper($order->userShippingAddress.', '.$order->userBarangay.', '.$order->userCityMunicipality.', '.$order->userProvince);
+
+        $customer_address = $order->mapAddress;
+        
+        $packages = array();
+        // dd($data);
+        $method = 'cash'; //if payment method is cod - id =1, 
+        $is_cod = $order->order_payment_type == 2 ? true : false;
+
+        $shipping = [
+            'matter' => 'TShirts',
+            'total_weight_kg' => ($weight / 1000),
+            'payment_method' => $method,
+            'points' => [
+                [
+                    'address' => $seller_address, //seller
+                    'contact_person' => [
+                        'phone' => $sellers->contact_num,
+                        'name' => strtoupper($sellers->name)
+                    ],
+                    // 'delivery_id' => $order_id,
+                    // 'is_cod_cash_voucher_required ' => false,
+                    'client_order_id' => $order->order_number,
+                    'packages' => $packages,
+                ], 
+                [
+                    'address' => $customer_address, //customer
+                    'contact_person' => [
+                        'phone' => $order->userMobile,
+                        'name' => strtoupper($order->userFullName)
+                    ],
+                    // 'delivery_id' => $order_id,
+                    // 'is_cod_cash_voucher_required ' => false,
+                    'is_order_payment_here' => $is_cod,
+                    'client_order_id' => $order->order_number,
+                    'taking_amount' => $order->seller_total, //subtotal ?
+                    // 'packages' => $packages,
+                ],
+
+            ],
+        ];
+
+        
+        // dd($shipping);
+        $json = json_encode($shipping, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        // dd($json);
+        $curl = curl_init();
+        // curl_setopt($curl, CURLOPT_URL, 'https://robot.mrspeedy.ph/api/business/1.1/create-order');
+        curl_setopt($curl, CURLOPT_URL, 'https://robot.mrspeedy.ph/api/business/1.1/calculate-order');
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($curl, CURLOPT_HTTPHEADER, ['X-DV-Auth-Token: 4D2C728310323C2B6F7FF5972247079E15D6C10E']);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
+        $result = curl_exec($curl); 
+        if ($result === false) { 
+            throw new \Exception(curl_error($curl), curl_errno($curl)); 
+        } 
+
+        $returns = json_decode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        dd($returns['order']);
+    }
+
     public function index()
     {
-        $details = SellerOrderItems::select('cart_id')->where('seller_order_id', 3)->get()->toArray();
-        $cart_id = array();
-        foreach($details as $det)
+        $_order = SellerOrder::where('seller_sub_total', 0)->get();
+        foreach($_order as $order)
         {
-            array_push($cart_id, $det['cart_id']);
+            $_items = SellerOrderItems::leftjoin('stocks',function($join){
+                                            $join->on('stocks.product_id','seller_order_item.product_id');
+                                            $join->on('stocks.stocks_size','seller_order_item.size');
+                                        })
+                                      ->where('seller_order_id', $order->seller_order_id)->get();
+            dd($_items);
+
         }
-
-        $cart = CartModel::whereIn('cart_id', $cart_id)->get();
-        dd($cart);
-
     }
 }

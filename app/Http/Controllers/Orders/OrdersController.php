@@ -95,6 +95,20 @@ class OrdersController extends MainController
         try
         {
             $order_id                       = Crypt::decrypt($request->order_id);
+            
+            $proceed['success'] = true;
+            $proceed['message'] = '';
+            $order_data = SellerOrder::single($order_id)->first();
+            if($order_data->order_delivery_type == 2 && $request->status == 2)
+            {
+                $proceed = Self::mr_speedy($order_id);
+            }
+
+            if(!$proceed['success'])
+            {
+                return response()->json($proceed['message'], 500);
+            }
+
             $order                          = new SellerOrder;
             $order->exists                  = true;
             $order->seller_order_id         = $order_id;
@@ -124,9 +138,118 @@ class OrdersController extends MainController
         {
             return response()->json($e->getMessage(), 500);
         }
-        
+    }
 
 
+    public function mr_speedy($order_id)
+    {
+        $ret['success'] = true;
+        $ret['message'] = '';
+        try
+        {   
+            $order = SellerOrder::single($order_id)->first();
+        // dd($order_id);
+            $sellers  = Sellers::where('sellers.id', $order->seller_org_id)
+                                        ->leftjoin('refprovince','refprovince.provCode','sellers.province')
+                                        ->leftjoin('refcitymun','refcitymun.citymunCode','sellers.city')
+                                        ->leftjoin('refbrgy','refbrgy.brgyCode','sellers.brgy')
+                                        ->first();
+
+            $_items     = SellerOrderItems::details($order_id)->get();
+            // dd($_items);
+            $packages   = array();
+            $weight     = 0;
+            foreach($_items as $items)
+            {
+                $temp                           = array();
+                $temp['ware_code']              = $items->brand_identifier;
+                $temp['description']            = $items->product_name.' ('.$items->size.')';
+                $temp['items_count']            = $items->order_qty;
+                $temp['item_payment_amount']    = $items->sold_price;
+                // $temp['cod']          = false;
+                array_push($packages, $temp);
+
+                $weight += $items->weight * $items->order_qty;
+            }
+            // dd($_items);
+
+            $seller_address = strtoupper($sellers->street_address.', '.$sellers->brgyDesc.', '.$sellers->citymunDesc.', '.$sellers->provDesc);
+            $other_address = strtoupper($order->userShippingAddress.', '.$order->userBarangay.', '.$order->userCityMunicipality.', '.$order->userProvince);
+
+            $customer_address = $order->mapAddress;
+            
+            $packages = array();
+            // dd($data);
+            $method = 'cash'; //if payment method is cod - id =1, 
+            $is_cod = $order->order_payment_type == 1 ? true : false;
+
+            $shipping = [
+                'matter' => 'TShirts',
+                'total_weight_kg' => ($weight / 1000),
+                'payment_method' => $method,
+                'points' => [
+                    [
+                        'address' => $seller_address, //seller
+                        'contact_person' => [
+                            'phone' => $sellers->contact_num,
+                            'name' => strtoupper($sellers->name)
+                        ],
+                        // 'delivery_id' => $order_id,
+                        // 'is_cod_cash_voucher_required ' => false,
+                        'client_order_id' => $order->order_number,
+                        'packages' => $packages,
+                    ], 
+                    [
+                        'address' => $customer_address, //customer
+                        'contact_person' => [
+                            'phone' => $order->userMobile,
+                            'name' => strtoupper($order->userFullName)
+                        ],
+                        // 'delivery_id' => $order_id,
+                        // 'is_cod_cash_voucher_required ' => false,
+                        'is_order_payment_here' => $is_cod,
+                        'client_order_id' => $order->order_number,
+                        'taking_amount' => $order->seller_total, //subtotal ?
+                        'note' => 'Customer identifiable address: You can verify this with the customer->'.$other_address,
+                        // 'packages' => $packages,
+                    ],
+
+                ],
+            ];
+
+            
+            // dd($shipping);
+            $json = json_encode($shipping, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            // dd($json);
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, 'https://robot.mrspeedy.ph/api/business/1.1/create-order');
+            // curl_setopt($curl, CURLOPT_URL, 'https://robot.mrspeedy.ph/api/business/1.1/calculate-order');
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($curl, CURLOPT_HTTPHEADER, ['X-DV-Auth-Token: 4D2C728310323C2B6F7FF5972247079E15D6C10E']);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
+            $result = curl_exec($curl); 
+            if ($result === false) { 
+
+                // throw new \Exception(curl_error($curl), curl_errno($curl)); 
+                $ret['success'] = false;
+                $ret['message'] = curl_error($curl);
+            } 
+            else
+            {
+                $ret['success'] = true;
+                $ret['message'] = '';
+            }
+
+            $returns = json_decode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        }   
+        catch(\Exception $e)
+        {
+            $ret['success'] = false;
+            $ret['message'] = $e->getMessage();
+        }
+
+        return $ret;
     }
 
     public function update_pouch(Request $request)

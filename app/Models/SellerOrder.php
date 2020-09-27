@@ -21,4 +21,14 @@ class SellerOrder extends Model
     				 ->leftjoin('delivery_status','delivery_status.id','seller_order.seller_delivery_status')
     				 ->orderBy('order_date','desc');
     }
+
+    public function scopesingle($query, $order_id)
+    {
+        return  $query->select('*','seller_order.seller_id as seller_org_id','orders.id as order_id')
+                     ->where('seller_order_id', $order_id)
+                     ->leftjoin('orders','orders.id','seller_order.order_id')
+                     ->leftjoin('users','users.userToken','orders.user_token')
+                     ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
+                     ->leftjoin('delivery_types','delivery_types.id','orders.order_delivery_type');
+    }
 }
