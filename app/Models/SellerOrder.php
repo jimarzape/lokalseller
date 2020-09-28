@@ -31,4 +31,10 @@ class SellerOrder extends Model
                      ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
                      ->leftjoin('delivery_types','delivery_types.id','orders.order_delivery_type');
     }
+
+    public function scopesales($query, $seller_id)
+    {
+        return  $query->whereIn('seller_delivery_status', array(3,4,7,8))
+                      ->where('seller_id', $seller_id);
+    }
 }

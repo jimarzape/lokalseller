@@ -14,6 +14,8 @@ use App\Models\Sellers;
 use App\Models\PouchModel;
 use App\Models\SellerOrder;
 use App\Models\SellerOrderItems;
+use App\Models\StockLogs;
+use App\Models\StockModel;
 use Auth;
 use Crypt;
 use PDF;
@@ -79,6 +81,7 @@ class OrdersController extends MainController
                                          ->leftjoin('users','users.userToken','orders.user_token')
                                          ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
                                          ->leftjoin('delivery_types','delivery_types.id','orders.order_delivery_type')
+                                         ->leftjoin('delivery_status','delivery_status.id','seller_order.seller_delivery_status')
                                          ->first();
         // $this->data['_items'] = CartModel::where('cart_order_number', $this->data['order']->order_number)
         //                                  ->leftjoin('products','products.product_identifier','cart.product_identifier')
@@ -104,6 +107,13 @@ class OrdersController extends MainController
                 $proceed = Self::mr_speedy($order_id);
             }
 
+
+            if($request->status == 6 && ($order_data->seller_delivery_status == 1 || $order_data->seller_delivery_status == 2)) //cancelled orders
+            {
+                Self::cancel_order($order_id);
+            }
+
+
             if(!$proceed['success'])
             {
                 return response()->json($proceed['message'], 500);
@@ -115,7 +125,7 @@ class OrdersController extends MainController
             $order->seller_delivery_status  = $request->status;
             $order->save();
 
-            $update['delivery_status'] =$request->status;
+            $update['delivery_status'] = $request->status;
 
 
             $details = SellerOrderItems::select('cart_id')->where('seller_order_id', 3)->get()->toArray();
@@ -137,6 +147,36 @@ class OrdersController extends MainController
         catch(\Exception $e)
         {
             return response()->json($e->getMessage(), 500);
+        }
+    }
+
+    public function cancel_order($order_id)
+    {
+        $_items = SellerOrderItems::where('seller_order_id', $order_id)->get();
+        foreach($_items as $items)
+        {
+            // 
+            $stock = StockModel::where('id', $items->stock_id)->first();
+            if(!is_null($stock))
+            {
+                // dd($stock);
+                $new_qty                        = $stock->stocks_quantity + $items->order_qty ;
+                $update_stock                   = new StockModel;
+                $update_stock->exists           = true;
+                $update_stock->id               = $stock->id;
+                $update_stock->stocks_quantity  = $new_qty;
+                $update_stock->save();
+            }
+
+            $logs               = new StockLogs;
+            $logs->product_id   = $items->product_id;
+            $logs->stock_id     = $items->stock_id;
+            $logs->seller_id    = Auth::user()->id;
+            $logs->stock_qty    = $items->order_qty;
+            $logs->stock_price  = $items->selling_price;
+            $logs->stock_weight = $items->weight;
+            $logs->save();
+
         }
     }
 

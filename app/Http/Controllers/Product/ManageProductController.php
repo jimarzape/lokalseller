@@ -260,7 +260,8 @@ class ManageProductController extends MainController
     {
         $product_id = Crypt::decrypt($product_id);
         $this->data['product'] = ProductModel::where('product_id',$product_id)->first();
-        $this->data['_logs'] = StockLogs::where('product_stock_logs.product_id',$product_id)
+        $this->data['_logs'] = StockLogs::select('*','product_stock_logs.created_at as date_logs')
+                                        ->where('product_stock_logs.product_id',$product_id)
                                         ->leftjoin('stocks','stocks.id','product_stock_logs.stock_id')
                                         ->orderBy('stock_log_id','desc')
                                         ->paginate(20);

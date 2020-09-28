@@ -37,7 +37,7 @@
 							<p><span>Sub Total</span><span class="text-gold pull-right">{{number_format($order->seller_sub_total, 2)}}</span></p>
 							<p><span>Shipping Fee</span><span class="text-gold pull-right">{{number_format($order->seller_delivery_fee, 2)}}</span></p>
 							<p><span>Grand Total</span><span class="text-gold pull-right">{{number_format($order->seller_total, 2)}}</span></p>
-							<p><span>Courrier</span><span class="text-gold pull-right">{{$order->delivery_type}}</span></p>
+							<p><span>Courier</span><span class="text-gold pull-right">{{$order->delivery_type}}</span></p>
 						</div>
 					</div>
 				</div>
@@ -84,17 +84,23 @@
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="text-gold">Status</label>
+								@if(order_allow($order->seller_delivery_status))
 								<select class="form-control" name="status" required>
 									<option value="">Select Status</option>
 									@foreach($_status as $status)
 									<option value="{{$status->id}}" {{$status->id == $order->seller_delivery_status  ? 'selected="selected"' : ''}}>{{$status->status_name}}</option>
 									@endforeach
 								</select>
+								@else
+								<span class="text-gold pull-right">{{$order->status_name}}</span>
+								@endif
 							</div>
 						</div>
+						@if(order_allow($order->seller_delivery_status))
 						<div class="col-md-12">
 							<button class="btn btn-gold btn-block btn-submit" type="submit">Update Order Status</button>
 						</div>
+						@endif
 					</form>
 				</div>
 			</div>

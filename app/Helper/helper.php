@@ -36,3 +36,11 @@ function date_alter($date_raw, $alter = '-1 day')
 {
 	return date('Y-m-d', strtotime($alter, strtotime($date_raw)));
 }
+
+
+function order_allow($status)
+{
+	$arr = [1 => true, 2 => true, 3 => true, 4 => false, 5 => true, 6 => false, 7 => true, 8 => false];
+
+	return $arr[$status];
+}

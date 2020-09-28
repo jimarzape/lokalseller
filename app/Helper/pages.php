@@ -110,6 +110,25 @@ function _pages()
     
     array_push($pages, $details);
 
+    $details['title']   = 'Reports'; 
+    $details['icon']    = 'mdi mdi-chart-line';
+    $details['url']     = 'javascript:void(0)';
+    $details['status']  = '';
+    $details['desc']    = 'nav.sponsored';
+    $details['class']   = 'has-arrow';
+    $details['has_sub'] = true;
+    $details['sub']     = array();
+
+    $sub['title']       = 'Sales';
+    $sub['icon']        = '';
+    $sub['url']         = route('reports.sales');
+    $sub['status']      = '';
+    $sub['desc']        = 'nav.sponsored.overview';
+    
+    array_push($details['sub'], $sub);
+
+    array_push($pages, $details);
+
     // $details['title']   = 'Sponsored Solutions'; 
     // $details['icon']    = 'mdi mdi-lightbulb-on';
     // $details['url']     = 'javascript:void(0)';

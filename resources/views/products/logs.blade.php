@@ -16,6 +16,7 @@
 									<th class="text-center">Unit Price</th>
 									<th class="text-center">Weight (grams)</th>
 									<th class="text-center">Stock</th>
+									<th class="text-center">Date</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -25,6 +26,7 @@
 									<td class="text-right">{{number_format($logs->stock_price, 2)}}</td>
 									<td class="text-right">{{number_format($logs->stock_weight, 2)}}</td>
 									<td class="text-right">{{number_format($logs->stock_qty)}}</td>
+									<td class="text-center">{{date('M d, Y', strtotime($logs->date_logs))}}</td>
 								</tr>
 								@endforeach
 							</tbody>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\MainController;
 use Auth;
+use App\Models\SellerOrder;
 
 class DashBoardController extends MainController
 {
@@ -18,6 +19,7 @@ class DashBoardController extends MainController
     public function index()
     {
     	// dd($this->data['_pages']);
+        
     	return view('dashboard', $this->data);
     }
 }
