@@ -119,10 +119,15 @@ class OrdersController extends MainController
                 return response()->json($proceed['message'], 500);
             }
 
+            $pouch                          = PouchModel::where('id', $request->pouch_id)->first();
+            // dd($order_id);
             $order                          = new SellerOrder;
             $order->exists                  = true;
             $order->seller_order_id         = $order_id;
             $order->seller_delivery_status  = $request->status;
+            $order->seller_pouch_id         = $request->pouch_id;
+            $order->seller_pouch_qty        = $request->pouch_qty;
+            $order->seller_pouch_amount     = $pouch->pouch_price;
             $order->save();
 
             $update['delivery_status'] = $request->status;
@@ -139,7 +144,7 @@ class OrdersController extends MainController
 
             $status = OrderStatus::where('id', $request->status)->first();
 
-            $message['message'] = 'Order has been updated to '.$status->status_name;
+            $message['message'] = 'Order has been updated';
             $message['code'] = $request->status;
             $message['print'] = $request->status == 2 ? route('orders.print', Crypt::encrypt($order_id)) : '';
             return response()->json($message, 200);
@@ -292,29 +297,7 @@ class OrdersController extends MainController
         return $ret;
     }
 
-    public function update_pouch(Request $request)
-    {
-        try
-        {
-            $order_id                   = Crypt::decrypt($request->order_id);
-            $pouch                      = PouchModel::where('id', $request->pouch_id)->first();
-            $order                      = new SellerOrder;
-            $order->exists              = true;
-            $order->seller_order_id     = $order_id;
-            $order->seller_pouch_id     = $request->pouch_id;
-            $order->seller_pouch_qty    = $request->pouch_qty;
-            $order->seller_pouch_amount = $pouch->pouch_price;
-            $order->save();
-
-            $message['message'] = 'Pouch has been updated';
-            $message['code'] = 0;
-            return response()->json($message, 200);
-        }
-        catch(\Exception $e)
-        {
-            return response()->json($e->getMessage(), 500);
-        }
-    }
+    
 
     public function print($order_id)
     {

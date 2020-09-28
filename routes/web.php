@@ -49,6 +49,7 @@ Route::get('/orders/print/{id}', 'Orders\OrdersController@print')->name('orders.
 
 
 Route::get('/reports/sales', 'Report\SalesController@index')->name('reports.sales');
+Route::get('/reports/sales/export', 'Report\SalesController@export')->name('reports.sales.export');
 
 Route::get('/test', 'TestController@index');
 Route::get('/test/assign', 'TestController@assign_brand');
