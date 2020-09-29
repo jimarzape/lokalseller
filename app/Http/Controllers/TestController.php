@@ -395,9 +395,196 @@ class TestController extends Controller
         dd($returns['order']);
     }
 
+    public function fixorder()
+    {
+        return view('maintenance.fix');
+    }   
+
+    public function check_error_orders()
+    {
+        $seller = SellerOrder::select('order_number')->where('seller_id',0)->get()->toArray();
+        dd($seller);
+    }
+
+    public function check_order_number(Request $request)
+    {
+        $data['order'] = OrderModel::where('order_number', $request->order_number)->first()->toArray();
+        $data['cart'] = CartModel::select('*')
+                             ->leftjoin('products','products.product_identifier','cart.product_identifier')
+                             ->leftjoin('stocks', function($join){
+                                $join->on('stocks.stocks_size','cart.size');
+                                $join->on('stocks.product_id','products.product_id');
+                             })
+                             ->leftjoin('brands','brands.brand_identifier','products.brand_identifier')
+                             ->where('cart_order_number', $request->order_number)
+                             ->get()->toArray();
+        dd($data);
+    }
+
+    public function fix_this_order(Request $request)
+    {
+        try
+        {
+            $seller = SellerOrder::where('order_number', $request->order_number)->first();
+            if(is_null($seller))
+            {
+                Self::reassign($request->order_number);
+            }
+            else
+            {
+                Self::reassign($seller->order_number);
+                SellerOrder::where('seller_order_id', $seller->seller_order_id)->delete();
+            }
+        }
+        catch(\Exception $e)
+        {
+            dd($e->getMessage());
+        }
+    }
+
+    public function reassign($order_number)
+    {
+        $_cart = CartModel::select('*','stocks.id as stock_id')
+                             ->leftjoin('products','products.product_identifier','cart.product_identifier')
+                             ->leftjoin('stocks', function($join){
+                                $join->on('stocks.stocks_size','cart.size');
+                                $join->on('stocks.product_id','products.product_id');
+                             })
+                             ->where('cart_order_number', $order_number)
+                             ->get()->toArray();
+        $order = OrderModel::where('order_number', $order_number)->first();
+        $order_id           = $order->id;
+        $delivery_fee       = $order->order_delivery_fee;
+        $delivery_status    = $order->delivery_status;
+        $group_arr          = array();
+        foreach($_cart as $cart)
+        {
+            $group_arr[$cart['seller_id']][] = $cart;
+        }
+
+        foreach($group_arr as $seller_id => $sell_items)
+        {
+            $seller_number  = 'SN-'.$seller_id.time();
+            $net            = 0;
+            $discount       = 0;
+            $seller_share   = 0;
+            $share_rate     = 5;
+            $seller_total   = 0;
+            $subtotal       = 0;
+            $total_weight   = 0;
+
+            $seller                         = new SellerOrder;
+            $seller->order_id               =  $order_id;
+            $seller->seller_id              =  $seller_id;
+            $seller->order_number           =  $order_number;
+            $seller->seller_order_number    =  $seller_number;
+            $seller->seller_sub_total       =  $subtotal;
+            $seller->seller_delivery_fee    =  $delivery_fee; 
+            $seller->seller_total           =  $seller_total;
+            $seller->seller_share_rate      =  $share_rate; 
+            $seller->seller_share           =  $seller_share;
+            $seller->seller_discount        =  0;
+            $seller->seller_net             = $net;
+            $seller->seller_delivery_status = $delivery_status;
+            $seller->seller_remarks         = '';
+            $seller->save();   
+            $seller_order_id = $seller->seller_order_id;
+
+            foreach($sell_items as $items)
+            {
+                $sell_order                     = new SellerOrderItems;
+                $sell_order->seller_order_id    = $seller_order_id;
+                $sell_order->cart_id            = Self::null_zero($items['cart_id']);
+                $sell_order->product_id         = Self::null_zero($items['product_id']);
+                $sell_order->stock_id           = Self::null_zero($items['stock_id']);
+                $sell_order->order_qty          = Self::null_zero($items['quantity']);
+                $sell_order->size               = Self::null_zero($items['stocks_size']);
+                $sell_order->weight             = Self::null_zero($items['stocks_weight']);
+                $sell_order->selling_price      = Self::null_zero($items['stocks_price']);
+                $sell_order->selling_discount   = 0;
+                $sell_order->sold_price         = Self::null_zero($items['stocks_price']);
+                $sell_order->save();
+
+                $subtotal += ($items['quantity'] * $items['stocks_price']);
+                $total_weight += $items['stocks_weight'];
+
+                $logs               = new StockLogs;
+                $logs->product_id   = Self::null_zero($items['product_id']);
+                $logs->stock_id     = Self::null_zero($items['stock_id']);
+                $logs->seller_id    = $seller_id;
+                $logs->stock_qty    = (0 - Self::null_zero($items['quantity']));
+                $logs->stock_price  = Self::null_zero($items['stocks_price']);
+                $logs->stock_weight = Self::null_zero($items['stocks_weight']);
+                $logs->save();
+
+
+                $stock_data = StockModel::where('id', $items['stock_id'])->first();
+                if(!is_null($stock_data))
+                {
+                    $update_stock                   = new StockModel;
+                    $update_stock->exists           = true;
+                    $update_stock->id               = Self::null_zero($items['stock_id']);
+                    $update_stock->stocks_quantity  = ($stock_data->stocks_quantity - Self::null_zero($items['quantity']));
+                    $update_stock->save();
+                }
+
+            }
+
+            $seller_share = ($share_rate / 100) * $subtotal;
+            $seller_net = $subtotal - $seller_share;
+            $seller_total = $subtotal + $delivery_fee;
+
+            $update_seller = new SellerOrder;
+            $update_seller->exists = true;
+            $update_seller->seller_order_id = $seller_order_id;
+            $update_seller->seller_sub_total = $subtotal;
+            $update_seller->seller_share = $seller_share;
+            $update_seller->seller_net = $seller_net;
+            $update_seller->seller_total = $seller_total;
+            $update_seller->save();
+        }
+        dd('success');
+    }
+
     public function index()
     {
-        return 'LKL-89071'.time();
+        $_seller        = SellerOrder::where('seller_id',0)->get();
+        $unassign       = array();
+        $unidentified   = array();
+        $success        = array();
+        foreach($_seller as $seller)
+        {
+            $order = OrderModel::where('order_number', $seller->order_number)->first();
+            if(is_null($order))
+            {
+                array_push($unassign, $seller->order_number);
+            }
+            else
+            {
+
+                $_cart = CartModel::select('*')
+                             ->leftjoin('products','products.product_identifier','cart.product_identifier')
+                             ->leftjoin('stocks', function($join){
+                                $join->on('stocks.stocks_size','cart.size');
+                                $join->on('stocks.product_id','products.product_id');
+                             })
+                             ->where('cart_order_number', $seller->order_number)
+                             ->get();
+
+                foreach($_cart as $cart)
+                {
+                    if(!is_null($cart->product_identifier))
+                    {
+
+                    }
+                    else
+                    {
+                        array_push($unindentified, $cart->cart_id);
+                    }
+                }
+            }
+        }
+        dd($unidentified);
     }
 
     public function stockproductid()

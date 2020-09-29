@@ -11,7 +11,7 @@
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
-    <title>Admin Press Admin Template - The Ultimate Bootstrap 4 Admin Template</title>
+    <title><?php echo e(config('app.name', 'Laravel')); ?></title>
     <!-- Bootstrap Core CSS -->
     <link href="/dark/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->

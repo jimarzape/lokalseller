@@ -48,7 +48,7 @@
 							<tbody>
 								@foreach($_sales as $sales)
 								<tr>
-									<td>{{$sales->order_number}}</td>
+									<td><a href="{{route('orders.view',Crypt::encrypt($sales->seller_order_id))}}">{{$sales->order_number}}</a></td>
 									<td>{{$sales->seller_order_number}}</td>
 									<td class="text-right">{{number_format($sales->seller_sub_total, 2)}}</td>
 									<td class="text-right">{{number_format($sales->seller_delivery_fee, 2)}}</td>

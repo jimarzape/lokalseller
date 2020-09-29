@@ -5,9 +5,8 @@
             <div class="col-xs-12 text-center">
                 <img src="/images/logo-hd.png" class="img-logo-center">
             </div>
-            <h1 class="text-gold login-header">YOUR CONTENT HEADER HERE</h1>
-            <h3 class="text-gold">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.</h3>
+            <h1 class="text-gold login-header">Lokal Seller Center</h1>
+            <h3 class="text-gold">LokaldatPH is a street style fashion community platform where select Filipino designers and boutiques showcase their unique artistic products and styles online.</h3>
             <!-- <ul class="circle-list">
               <li>1</li>
               <li>2</li>

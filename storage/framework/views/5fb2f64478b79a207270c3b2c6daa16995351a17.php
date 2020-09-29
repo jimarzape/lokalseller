@@ -47,7 +47,7 @@
 							<tbody>
 								<?php $__currentLoopData = $_sales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sales): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 								<tr>
-									<td><?php echo e($sales->order_number); ?></td>
+									<td><a href="<?php echo e(route('orders.view',Crypt::encrypt($sales->seller_order_id))); ?>"><?php echo e($sales->order_number); ?></a></td>
 									<td><?php echo e($sales->seller_order_number); ?></td>
 									<td class="text-right"><?php echo e(number_format($sales->seller_sub_total, 2)); ?></td>
 									<td class="text-right"><?php echo e(number_format($sales->seller_delivery_fee, 2)); ?></td>
