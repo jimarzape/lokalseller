@@ -397,16 +397,81 @@ class TestController extends Controller
 
     public function index()
     {
+        return 'LKL-89071'.time();
+    }
+
+    public function stockproductid()
+    {
+        $_stocks = StockModel::where('product_id',null)->get();
+        foreach($_stocks as $stocks)
+        {
+            $product = ProductModel::where('product_identifier',$stocks->product_identifier)->first();
+            if(!is_null($product))
+            {
+                // dd($product);
+                $update = new StockModel;
+                $update->exists = true;
+                $update->id = $stocks->id;
+                $update->product_id = $product->product_id;
+                $update->save();
+            }
+        }
+    }
+
+    public function fix_order_zero()
+    {
         $_order = SellerOrder::where('seller_sub_total', 0)->get();
         foreach($_order as $order)
         {
-            $_items = SellerOrderItems::leftjoin('stocks',function($join){
-                                            $join->on('stocks.product_id','seller_order_item.product_id');
-                                            $join->on('stocks.stocks_size','seller_order_item.size');
-                                        })
-                                      ->where('seller_order_id', $order->seller_order_id)->get();
-            dd($_items);
+            $_cart = CartModel::select('*','stocks.id as stock_id')
+                             ->leftjoin('products','products.product_identifier','cart.product_identifier')
+                             ->leftjoin('stocks', function($join){
+                                $join->on('stocks.stocks_size','cart.size');
+                                $join->on('stocks.product_id','products.product_id');
+                             })
+                             ->where('cart_order_number', $order->order_number)
+                             ->where('products.seller_id', $order->seller_id)
+                             ->get();
+            $subtotal = 0;
 
+            foreach($_cart as $cart)
+            {
+                
+                if(!is_null($cart->stocks_size))
+                {
+                    // dd($cart);
+                    SellerOrderItems::where('seller_order_id', $order->seller_order_id)
+                                    ->where('cart_id', $cart->cart_id)
+                                    ->delete();
+                    $item_order                     = new SellerOrderItems;
+                    $item_order->seller_order_id    = $order->seller_order_id;
+                    $item_order->cart_id            = $cart->cart_id;
+                    $item_order->product_id         = $cart->product_id;
+                    $item_order->stock_id           = $cart->stock_id;
+                    $item_order->order_qty          = $cart->quantity;
+                    $item_order->size               = $cart->size;
+                    $item_order->weight             = $cart->stocks_weight;
+                    $item_order->selling_price      = $cart->stocks_price;
+                    $item_order->selling_discount   = 0;
+                    $item_order->sold_price         = $cart->stocks_price;
+                    $item_order->save();
+                    $subtotal += ($cart->quantity * $cart->stocks_price);
+                }
+            }
+
+            $total  = $subtotal + $order->seller_delivery_fee;
+            $rate   = 5;
+            $share  = $subtotal * ($rate / 100);
+            $net    = $subtotal - $rate;
+            $update_order                       = new SellerOrder;
+            $update_order->exists               = true;
+            $update_order->seller_order_id      = $order->seller_order_id;
+            $update_order->seller_sub_total     = $subtotal;
+            $update_order->seller_total         = $total;
+            $update_order->seller_share_rate    = $rate;
+            $update_order->seller_share         = $share;
+            $update_order->seller_share         = $net;
+            $update_order->save();
         }
     }
 }

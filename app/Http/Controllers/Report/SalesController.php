@@ -23,7 +23,8 @@ class SalesController extends MainController
         $sales      = SellerOrder::sales(Auth::user()->id);
         if($request->has('from') && $request->has('to'))
         {
-            $sales  = $sales->whereBetween('created_at', [$request->from, $request->to]);
+            $date_to     = date('Y-m-d', strtotime("+1 day", strtotime($request->to)));
+            $sales  = $sales->whereBetween('created_at', [$request->from, $date_to]);
         }
     	$this->data['_sales'] = $sales->orderBy('created_at','desc')->paginate(20);
     	$this->data['_total'] = $sales->sum('seller_net');
@@ -34,11 +35,12 @@ class SalesController extends MainController
     public function export(Request $request)
     {
         $sales       = SellerOrder::sales(Auth::user()->id);
+        $date_to     = date('Y-m-d', strtotime("+1 day", strtotime($request->to)));
         if($request->has('from') && $request->has('to'))
         {
             if($request->from != '' && $request->to != '')
             {
-                $sales  = $sales->whereBetween('created_at', [$request->from, $request->to]);
+                $sales  = $sales->whereBetween('created_at', [$request->from, $date_to]);
             }
             
         }
