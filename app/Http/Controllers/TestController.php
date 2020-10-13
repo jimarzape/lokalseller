@@ -15,6 +15,7 @@ use App\Models\Barangay;
 use App\Models\SellerOrder;
 use App\Models\StockLogs;
 use App\Models\SellerOrderItems;
+use DB;
 
 class TestController extends Controller
 {
@@ -452,6 +453,7 @@ class TestController extends Controller
                              })
                              ->where('cart_order_number', $order_number)
                              ->get()->toArray();
+        dd($_cart);
         $order = OrderModel::where('order_number', $order_number)->first();
         $order_id           = $order->id;
         $delivery_fee       = $order->order_delivery_fee;
@@ -548,43 +550,63 @@ class TestController extends Controller
 
     public function index()
     {
-        $_seller        = SellerOrder::where('seller_id',0)->get();
-        $unassign       = array();
-        $unidentified   = array();
-        $success        = array();
-        foreach($_seller as $seller)
+        // dd('LKL-'. 17878 .time());
+        // $_products = ProductModel::select('*','brands.brand_identifier as b_identity')->leftjoin('brands','brands.brand_id','products.brand_id')->where('products.brand_identifier','')->get();
+        // // dd($_products);
+        // foreach($_products as $products)
+        // {
+        //     // dd($products->brand_identifier);
+        //     $update = new ProductModel;
+        //     $update->exists = true;
+        //     $update->product_id = $products->product_id;
+        //     $update->brand_identifier = $products->b_identity;
+        //     $update->save();
+        // }
+        // dd($_products->count());
+        // Self::order_status();
+        // Self::json();
+        Self::lkl_product();
+    }
+
+    public function lkl_product()
+    {
+        // dd('test');
+        $_stocks = StockModel::where('product_identifier','LIKE','%LK-%')->get();
+        foreach($_stocks as $stock)
         {
-            $order = OrderModel::where('order_number', $seller->order_number)->first();
-            if(is_null($order))
+            // dd($stock);
+            try
             {
-                array_push($unassign, $seller->order_number);
+                $exp = explode('LK-', $stock->product_identifier);
+                // dd($exp);
+                $update = new StockModel;
+                $update->exists = true;
+                $update->id = $stock->id;
+                $update->product_identifier= $exp[1];
+                $update->save();
             }
-            else
+            catch(\Exception $e)
             {
-
-                $_cart = CartModel::select('*')
-                             ->leftjoin('products','products.product_identifier','cart.product_identifier')
-                             ->leftjoin('stocks', function($join){
-                                $join->on('stocks.stocks_size','cart.size');
-                                $join->on('stocks.product_id','products.product_id');
-                             })
-                             ->where('cart_order_number', $seller->order_number)
-                             ->get();
-
-                foreach($_cart as $cart)
-                {
-                    if(!is_null($cart->product_identifier))
-                    {
-
-                    }
-                    else
-                    {
-                        array_push($unindentified, $cart->cart_id);
-                    }
-                }
+                dd($e);
             }
         }
-        dd($unidentified);
+    }
+
+
+    public function order_status()
+    {
+        $_orders = SellerOrder::get();
+        foreach($_orders as $orders)
+        {
+            // dd($orders);
+            $update['delivery_status'] = $orders->seller_delivery_status;
+            $_items = SellerOrderItems::select('cart_id')->where('seller_order_id', $orders->seller_order_id)->get()->toArray();
+            $carts  = array_column($_items, 'cart_id');
+            // dd($update);
+            CartModel::whereIn('cart_id', $carts)->update($update);
+        }
+
+        dd('done');
     }
 
     public function stockproductid()

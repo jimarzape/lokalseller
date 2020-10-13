@@ -32,7 +32,7 @@
 }
 .text-gold, a .text-gold
 {
-	color: #d4af37;
+	/*color: #d4af37;*/
 }
 
 .padding-2-5
@@ -138,4 +138,36 @@
 .ml-5
 {
 	margin-left: 5px !important;
+}
+.navbar-collapse
+{
+	background-color:#d4af37 !important;
+}
+.topbar .top-navbar .navbar-nav>.nav-item>.nav-link
+{
+	color: white !important;
+}
+
+
+.sidebar-nav ul li a.active, .sidebar-nav ul li a:hover
+{
+	color: #d4af37 !important;
+}
+.sidebar-nav ul li a.active i, .sidebar-nav ul li a:hover i
+{
+	color:#d4af37 !important;
+}
+html body .text-themecolor
+{
+	color: #d4af37 !important;
+}
+.sidebar-nav>ul>li.active>a
+{
+	background-color:#d4af37 !important;
+	color:white !important;
+}
+
+.sidebar-nav>ul>li.active>a i
+{
+	color:white !important;
 }

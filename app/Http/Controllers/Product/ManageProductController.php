@@ -9,6 +9,7 @@ use App\Models\BrandModel;
 use App\Models\ProductImage;
 use App\Models\StockModel;
 use App\Models\StockLogs;
+use App\Models\SystemLogs;
 use Crypt;
 use Auth;
 use Validator;
@@ -59,14 +60,20 @@ class ManageProductController extends MainController
             }
             else
             {
+                $data = ProductModel::where('product_id', $request->id)->first();
 
                 $update                 = new ProductModel;
                 $update->exists         = true;
                 $update->product_id     = $request->id;
                 $update->product_active = $data->product_active == 1 ? 0 : 1;
                 $update->save();
+                $status             = $data->product_active == 1 ? 'deactivated' : 'activated';
+                $logs               = new SystemLogs;
+                $logs->seller_id    = Auth::user()->id;
+                $logs->logs         = strtoupper($status).' <u>'.$data->product_name.'</u>';
+                $logs->save();
 
-                $return['message']  = 'Product has been '.($data->product_active == 1 ? 'deactivated.' : 'activated.');
+                $return['message']  = 'Product has been '.$status.'.';
                 $return['status']   = $data->product_active == 1 ? 0 : 1;
                 return response()->json($return, 200);
             }
@@ -163,6 +170,14 @@ class ManageProductController extends MainController
             }
         }
 
+        $brand_data     =  BrandModel::where('brand_id', $request->brand_id)->first();
+        $brand_identifier = '';
+        if(!is_null($brand_data))
+        {
+            $brand_identifier = $brand_data->brand_identifier;
+        }
+
+
         $product                        = new ProductModel;
         $product->exists                = true;
         $product->product_id            = $request->product_id;
@@ -172,7 +187,7 @@ class ManageProductController extends MainController
         {
             $product->product_image         = $path_img[0];
         }
-        $product->brand_identifier      = '';
+        $product->brand_identifier      = $brand_identifier;
         $product->product_timestamp     = date('Y-m-d H:i:s');
         $product->product_price         = $request->product_price;
         $product->brand_id              = $request->brand_id;
@@ -187,11 +202,17 @@ class ManageProductController extends MainController
 
     public function archived(Request $request)
     {
+        $data                       = ProductModel::where('product_id', $request->id)->first();
         $product                    = new ProductModel;
         $product->exists            = true;
         $product->product_id        = $request->id;
         $product->product_archived  = 1;
         $product->save();
+
+        $logs = new SystemLogs;
+        $logs->seller_id = Auth::user()->id;
+        $logs->logs = 'Deleted <u>'.$data->product_name.'</u>';
+        $logs->save();
     }
 
     public function new_stocks(Request $request)

@@ -8,7 +8,8 @@ function order()
 	{
 		form_submit();
 		pouch();
-		btn_function()
+		btn_function();
+		date_pcker();
 	}
 
 	function btn_function()
@@ -18,6 +19,15 @@ function order()
 			e.preventDefault();
 			var route = $(this).attr('href');
 			createPopupWin(route, '',700,700);
+		});
+	}
+
+	function date_pcker()
+	{
+		$('input[name="daterange"]').daterangepicker({
+			opens: 'left'
+		}, function(start, end, label) {
+			console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
 		});
 	}
 

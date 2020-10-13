@@ -44,3 +44,4 @@ function order_allow($status)
 
 	return $arr[$status];
 }
+

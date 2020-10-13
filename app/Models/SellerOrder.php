@@ -18,8 +18,8 @@ class SellerOrder extends Model
     				 ->leftjoin('orders','orders.id','seller_order.order_id')
     				 ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
     				 ->leftjoin('delivery_types','delivery_types.id','orders.order_delivery_type')
-    				 ->leftjoin('delivery_status','delivery_status.id','seller_order.seller_delivery_status')
-    				 ->orderBy('order_date','desc');
+    				 ->leftjoin('delivery_status','delivery_status.id','seller_order.seller_delivery_status');
+    				 // ->orderBy('order_date','desc');
     }
 
     public function scopesingle($query, $order_id)
@@ -29,6 +29,8 @@ class SellerOrder extends Model
                      ->leftjoin('orders','orders.id','seller_order.order_id')
                      ->leftjoin('users','users.userToken','orders.user_token')
                      ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
+                     ->leftjoin('delivery_status','delivery_status.id','seller_order.seller_delivery_status')
+                     ->leftjoin('pouches','pouches.id','seller_order.seller_pouch_id')
                      ->leftjoin('delivery_types','delivery_types.id','orders.order_delivery_type');
     }
 

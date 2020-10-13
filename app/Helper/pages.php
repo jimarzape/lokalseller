@@ -428,6 +428,16 @@ function _pages()
     // $details['sub']     = array();
     // array_push($pages, $details);
 
+    $details['title']   = 'Logs'; 
+    $details['icon']    = 'mdi mdi-file-document-box';
+    $details['url']     = route('system.logs');
+    $details['status']  = '';
+    $details['desc']    = 'nav.dash';
+    $details['class']   = '';
+    $details['has_sub'] = false;
+    $details['sub']     = array();
+    array_push($pages, $details);
+
     return $pages;
 
 }

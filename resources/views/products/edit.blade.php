@@ -74,7 +74,7 @@
 					<div class="col-md-12">
 						<div class="form-group">
 							<label class="text-gold">Description</label>
-							<textarea class="text-html5-editor form-control" name="product_desc" rows="15" placeholder="Enter text ...">{!!old('product_desc',$product->product_desc)!!}</textarea>
+							<textarea text-html5-editor class=" form-control" name="product_desc" rows="15" placeholder="Enter text ...">{!!old('product_desc',$product->product_desc)!!}</textarea>
 						</div>
 					</div>
 				</div>

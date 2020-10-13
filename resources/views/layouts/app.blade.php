@@ -18,9 +18,9 @@
     <!-- morris CSS -->
     <link href="/dark/plugins/morrisjs/morris.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="/dark/css/style.css" rel="stylesheet">
+    <link href="/light/css/style.css" rel="stylesheet">
     <!-- You can change the theme colors from here -->
-    <link href="/dark/css/colors/blue-dark.css" id="theme" rel="stylesheet">
+    <!-- <link href="/light/css/colors/blue-dark.css" id="theme" rel="stylesheet"> -->
     <link rel="stylesheet" type="text/css" href="/css/custom.css?{{time()}}">
     <link href="/dark/plugins/toast-master/css/jquery.toast.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -142,7 +142,7 @@
                             <!-- Profile -->
                             <!-- ============================================================== -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="/images/black-user.png" alt="user" class="profile-pic" /></a>
+                                <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="/images/user-white.png" alt="user" class="profile-pic" /></a>
                                 <div class="dropdown-menu dropdown-menu-right scale-up">
                                     <ul class="dropdown-user">
                                         <li>

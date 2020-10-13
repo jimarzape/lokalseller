@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('css')
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+@endsection
 @section('content')
 <div class="container-fluid">
 	<div class="card">
@@ -26,7 +29,9 @@
 									<th>
 										<input type="search" class="form-control" name="order_no" placeholder="Search order no. here." value="{{Request::input('order_no')}}">
 									</th>
-									<th></th>
+									<th>
+										<input type="text" class="form-control" name="daterange" value="{{Request::input('daterange')}}" />
+									</th>
 									<th>
 										<select class="form-control" name="payment_method">
 											<option value="all" {{Request::input('payment_method') == 'all' ? 'selected="selected"' : ''}}>All</option>
@@ -43,7 +48,9 @@
 											@endforeach
 										</select>
 									</th>
-									<th></th>
+									<th>
+										
+									</th>
 									<th>
 										<select class="form-control" name="order_status">
 											<option value="all" {{Request::input('order_status') == 'all' ? 'selected="selected"' : ''}}>All</option>
@@ -94,5 +101,7 @@
 @endsection
 
 @section('js')
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript" src="/js/order.js?{{time()}}"></script>
 @endsection

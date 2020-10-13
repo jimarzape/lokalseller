@@ -16,9 +16,11 @@ use App\Models\SellerOrder;
 use App\Models\SellerOrderItems;
 use App\Models\StockLogs;
 use App\Models\StockModel;
+use App\Models\SystemLogs;
 use Auth;
 use Crypt;
 use PDF;
+use DB;
 
 class OrdersController extends MainController
 {
@@ -66,8 +68,21 @@ class OrdersController extends MainController
     		}
     	}
 
+        if($request->has('daterange'))
+        {
+            $date_arr = explode(' - ', $request->daterange);
+            if(isset($date_arr[1]))
+            {
+                $from   = date('m-d-Y', strtotime($date_arr[0]));
+                $to     = date('m-d-Y', strtotime("+1 day", strtotime($date_arr[1])));
+                $from_ar  = explode('-', $from);
+                // dd($from);
+                $orders = $orders->whereBetween('orders.order_date', [$from, $to]);
+            }
+        }
 
-    	$this->data['_orders'] = $orders->paginate(20);
+
+    	$this->data['_orders'] = $orders->orderBy('seller_order_id','desc')->paginate(20);
     	return view('orders.index', $this->data);
     }
 
@@ -106,11 +121,14 @@ class OrdersController extends MainController
             {
                 $proceed = Self::mr_speedy($order_id);
             }
-
-
-            if($request->status == 6 && ($order_data->seller_delivery_status == 1 || $order_data->seller_delivery_status == 2)) //cancelled orders
+            if($request->status == 6)
+            {
+                DB::table('cancellation')->where('order_number', $order_data->order_number)->delete();
+            }
+            if($request->status == 6 && ($order_data->seller_delivery_status == 1 || $order_data->seller_delivery_status == 2 || $order_data->seller_delivery_status == 5)) //cancelled orders
             {
                 Self::cancel_order($order_id);
+                
             }
 
 
@@ -130,6 +148,8 @@ class OrdersController extends MainController
             $order->seller_pouch_amount     = $pouch->pouch_price;
             $order->save();
 
+            Self::update_order($order_data->order_number, $request->status, $order_id);
+
             $update['delivery_status'] = $request->status;
 
 
@@ -143,6 +163,14 @@ class OrdersController extends MainController
             CartModel::whereIn('cart_id', $cart_id)->update($update);
 
             $status = OrderStatus::where('id', $request->status)->first();
+            // dd($order_data->status_name);
+            $logs_text = 'Updated <b><u>'.$order_data->order_number.'</u></b> from delivery status - '.$order_data->status_name.' to '.$status->status_name.' and from pouch - '.$order_data->pouch_size.' ( amount : '.number_format($order_data->seller_pouch_amount, 2).' | qty : '.number_format($order_data->seller_pouch_qty).' ) to '.Self::null2Na($pouch->pouch_size).' ( amount : '.Self::null2Zero($pouch->pouch_price).' | qty '.number_format($request->pouch_qty).' )';
+
+            $logs               = new SystemLogs;
+            $logs->seller_id    = Auth::user()->id;
+            $logs->logs         = $logs_text;
+            $logs->save();
+
 
             $message['message'] = 'Order has been updated';
             $message['code'] = $request->status;
@@ -153,6 +181,37 @@ class OrdersController extends MainController
         {
             return response()->json($e->getMessage(), 500);
         }
+    }
+
+    public function update_order($order_number, $status, $seller_order_id)
+    {
+        $update['delivery_status'] = $status;
+        OrderModel::where('order_number', $order_number)->update($update);
+
+        $_items = SellerOrderItems::select('cart_id')->where('seller_order_item.seller_order_id', $seller_order_id)->get()->toArray();
+        $carts  = array_column($_items, 'cart_id');
+
+        CartModel::whereIn('cart_id', $carts)
+                 ->update($update);
+    }
+    
+
+    public function null2Zero($number)
+    {
+        if(is_null($number))
+        {
+            $number = 0;
+        }
+        return $number;
+    }
+
+    public function null2Na($variable)
+    {
+        if(is_null($variable))
+        {
+            $variable = 'N/A';
+        }
+        return $variable;
     }
 
     public function cancel_order($order_id)
@@ -218,7 +277,8 @@ class OrdersController extends MainController
             }
             // dd($_items);
 
-            $seller_address = strtoupper($sellers->street_address.', '.$sellers->brgyDesc.', '.$sellers->citymunDesc.', '.$sellers->provDesc);
+            // $seller_address = strtoupper($sellers->street_address.', '.$sellers->brgyDesc.', '.$sellers->citymunDesc.', '.$sellers->provDesc);
+            $seller_address = strtoupper($sellers->street_address);
             $other_address = strtoupper($order->userShippingAddress.', '.$order->userBarangay.', '.$order->userCityMunicipality.', '.$order->userProvince);
 
             $customer_address = $order->mapAddress;
@@ -245,7 +305,7 @@ class OrdersController extends MainController
                         'packages' => $packages,
                     ], 
                     [
-                        'address' => $customer_address, //customer
+                        'address' => $other_address, //customer
                         'contact_person' => [
                             'phone' => $order->userMobile,
                             'name' => strtoupper($order->userFullName)
@@ -255,7 +315,7 @@ class OrdersController extends MainController
                         'is_order_payment_here' => $is_cod,
                         'client_order_id' => $order->order_number,
                         'taking_amount' => $order->seller_total, //subtotal ?
-                        'note' => 'Customer identifiable address: You can verify this with the customer->'.$other_address,
+                        // 'note' => 'Customer identifiable address: You can verify this with the customer->'.$other_address,
                         // 'packages' => $packages,
                     ],
 
@@ -285,7 +345,7 @@ class OrdersController extends MainController
                 $ret['success'] = true;
                 $ret['message'] = '';
             }
-
+            // dd($json);
             $returns = json_decode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }   
         catch(\Exception $e)

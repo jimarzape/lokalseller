@@ -65,3 +65,6 @@ Route::post('/test/fixorder/fix', 'TestController@fix_this_order')->name('check.
 
 Route::post('/register/city', 'TestController@load_city')->name('reg.city');
 Route::post('/register/brgy', 'TestController@load_brgy')->name('reg.brgy');
+
+
+Route::get('/logs', 'Logs\LogsController@index')->name('system.logs');

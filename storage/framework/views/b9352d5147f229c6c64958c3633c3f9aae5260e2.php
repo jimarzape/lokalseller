@@ -1,3 +1,6 @@
+<?php $__env->startSection('css'); ?>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <div class="container-fluid">
 	<div class="card">
@@ -25,7 +28,9 @@
 									<th>
 										<input type="search" class="form-control" name="order_no" placeholder="Search order no. here." value="<?php echo e(Request::input('order_no')); ?>">
 									</th>
-									<th></th>
+									<th>
+										<input type="text" class="form-control" name="daterange" value="<?php echo e(Request::input('daterange')); ?>" />
+									</th>
 									<th>
 										<select class="form-control" name="payment_method">
 											<option value="all" <?php echo e(Request::input('payment_method') == 'all' ? 'selected="selected"' : ''); ?>>All</option>
@@ -42,7 +47,9 @@
 											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 										</select>
 									</th>
-									<th></th>
+									<th>
+										
+									</th>
 									<th>
 										<select class="form-control" name="order_status">
 											<option value="all" <?php echo e(Request::input('order_status') == 'all' ? 'selected="selected"' : ''); ?>>All</option>
@@ -94,6 +101,8 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('js'); ?>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript" src="/js/order.js?<?php echo e(time()); ?>"></script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\lokalseller\resources\views/orders/index.blade.php ENDPATH**/ ?>

@@ -9,6 +9,7 @@ use App\Models\BrandModel;
 use App\Models\ProductModel;
 use App\Models\ProductImage;
 use App\Models\StockModel;
+use App\Models\SystemLogs;
 use Validator;
 use Auth;
 
@@ -64,7 +65,7 @@ class AddProductController extends MainController
                 $brand_identifier = $brand_data->brand_identifier;
             }
 
-            $product_identifier = 'LK-'.Auth::user()->id.date('YmdHis');
+            $product_identifier = Auth::user()->id.date('YmdHis');
 
             $product                        = new ProductModel;
             $product->sku                   = $request->sku;
@@ -107,6 +108,13 @@ class AddProductController extends MainController
                     $stocks->save();
                 }
             }
+
+
+            $logs               = new SystemLogs;
+            $logs->seller_id    = Auth::user()->id;
+            $logs->logs         = 'Created new product <u>'.$request->product_name.'</u>';
+            $logs->save();
+
             $success['message'] = 'New Item has been inserted successfully.';
             return back()->with('success' , 'New Item has been inserted successfully.', 200);
         }
