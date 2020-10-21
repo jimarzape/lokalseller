@@ -683,4 +683,9 @@ class TestController extends Controller
             $update_order->save();
         }
     }
+
+    public function coming_soon()
+    {
+        
+    }
 }
