@@ -70,3 +70,7 @@ Route::post('/register/brgy', 'TestController@load_brgy')->name('reg.brgy');
 Route::get('/logs', 'Logs\LogsController@index')->name('system.logs');
 
 Route::get('/coming-soon', 'TestController@coming_soon')->name('reg.brgy');
+
+
+Route::get('/account/pending','DeniedController@pending')->name('account.pending');
+Route::get('/account/declined','DeniedController@declined')->name('account.declined');
