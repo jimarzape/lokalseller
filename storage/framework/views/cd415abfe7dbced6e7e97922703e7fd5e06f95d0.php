@@ -39,31 +39,38 @@
 							<label class="text-gold">Product Name</label>
 							<input type="text" class="form-control"  name="product_name" value="<?php echo e(old('product_name',$product->product_name)); ?>" required>
 						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="text-gold">Brands</label>
+									<select class="form-control" name="brand_id" required>
+										<option value="">Select Brand</option>
+										<?php $__currentLoopData = $_brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+										<option value="<?php echo e($brand->brand_id); ?>" <?php echo e(old('brand_id',$product->brand_id) == $brand->brand_id ? 'selected="selected"' : ''); ?>><?php echo e($brand->brand_name); ?></option>
+										<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="text-gold">SKU</label>
+									<input type="text" class="form-control" value="<?php echo e(old('sku',$product->sku)); ?>"  name="sku">
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-2"></div>
+					<div class="col-md-4">
 						<div class="form-group">
-							<label class="text-gold">Display Price: (Enter the lowest price on this item).</label>
+							<label class="text-gold">Display Price:</label>
 							<input type="number" min="0" step="any" class="form-control text-right" value="<?php echo e(old('product_price',$product->product_price)); ?>"  name="product_price" required>
+						</div>
+						<div class="form-group">
+							<button class="btn btn-primary btn-block btn-modal" type="button" data-toggle="modal" data-target="#sale-modal" data-id="<?php echo e($product->product_id); ?>" data-container=".modal-content" data-url="<?php echo e(route('product.put_sale')); ?>">Put on Sale</button>
 						</div>
 					</div>
 				
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="text-gold">Brands</label>
-							<select class="form-control" name="brand_id" required>
-								<option value="">Select Brand</option>
-								<?php $__currentLoopData = $_brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-								<option value="<?php echo e($brand->brand_id); ?>" <?php echo e(old('brand_id',$product->brand_id) == $brand->brand_id ? 'selected="selected"' : ''); ?>><?php echo e($brand->brand_name); ?></option>
-								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-							</select>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="text-gold">SKU</label>
-							<input type="text" class="form-control" value="<?php echo e(old('sku',$product->sku)); ?>"  name="sku">
-						</div>
-					</div>
+					
 					<div class="col-md-12">
 						<div class="form-group">
 							<label class="text-gold">Short Description</label>
@@ -73,7 +80,7 @@
 					<div class="col-md-12">
 						<div class="form-group">
 							<label class="text-gold">Description</label>
-							<textarea class="text-html5-editor form-control" name="product_desc" rows="15" placeholder="Enter text ..."><?php echo old('product_desc',$product->product_desc); ?></textarea>
+							<textarea text-html5-editor class=" form-control" name="product_desc" rows="15" placeholder="Enter text ..."><?php echo old('product_desc',$product->product_desc); ?></textarea>
 						</div>
 					</div>
 				</div>
@@ -127,6 +134,13 @@
 </div>
 <div id="stock-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            
+        </div>
+    </div>
+</div>
+<div id="sale-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             
         </div>

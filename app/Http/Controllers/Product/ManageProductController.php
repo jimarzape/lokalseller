@@ -288,4 +288,10 @@ class ManageProductController extends MainController
                                         ->paginate(20);
         return view('products.logs', $this->data);
     }
+
+    public function put_sale(Request $request)
+    {
+        $data['product_id'] = $request->id;
+        return view('products.sale',$data); 
+    }
 }
