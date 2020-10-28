@@ -18,6 +18,11 @@
 		</ul>
 	</div>
 	@endif
+	@if(!is_null($sale))
+	<div class="alert alert-success ">
+		<strong><i class="mdi mdi-alert-octagram"></i> ON SALE</strong>  <i style="text-decoration: line-through;">{{number_format($sale->sale_price, 2)}}</i> {{number_format($product->product_price, 2)}}
+	</div>
+	@endif
 	<form class="" action="{{route('product.update')}}" method="POST" enctype="multipart/form-data">
 		@csrf
 		<input type="hidden" name="product_id" value="{{$product->product_id}}">

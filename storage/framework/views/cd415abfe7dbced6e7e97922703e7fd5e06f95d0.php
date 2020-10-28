@@ -17,6 +17,12 @@
 		</ul>
 	</div>
 	<?php endif; ?>
+	<?php if(!is_null($sale)): ?>
+	<div class="alert alert-success ">
+		<strong><i class="mdi mdi-alert-octagram"></i> ON SALE</strong>  <i style="text-decoration: line-through;"><?php echo e(number_format($sale->sale_price, 2)); ?></i> <?php echo e(number_format($product->product_price, 2)); ?>
+
+	</div>
+	<?php endif; ?>
 	<form class="" action="<?php echo e(route('product.update')); ?>" method="POST" enctype="multipart/form-data">
 		<?php echo csrf_field(); ?>
 		<input type="hidden" name="product_id" value="<?php echo e($product->product_id); ?>">

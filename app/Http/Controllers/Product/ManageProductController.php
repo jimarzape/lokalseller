@@ -10,6 +10,7 @@ use App\Models\ProductImage;
 use App\Models\StockModel;
 use App\Models\StockLogs;
 use App\Models\SystemLogs;
+use App\Models\OnSale;
 use Crypt;
 use Auth;
 use Validator;
@@ -27,7 +28,8 @@ class ManageProductController extends MainController
     public function index(Request $request)
     {
         $_items = ProductModel::brands()->stocks()
-                              ->details(Auth::user()->id);
+                              ->details(Auth::user()->id)
+                              ->leftjoin('is_on_sale','is_on_sale.product_id','products.product_id');
         if($request->has('search'))
         {
             $_items = $_items->where('products.product_name','like','%'.$request->search.'%');
@@ -39,7 +41,7 @@ class ManageProductController extends MainController
                 $_items = $_items->where('products.brand_id', $request->brand);
             }
         }
-        $_items = $_items->select('products.*','brands.brand_name',DB::raw('sum(stocks_quantity) as stocks'))
+        $_items = $_items->select('products.*','is_on_sale.sale_price','brands.brand_name',DB::raw('sum(stocks_quantity) as stocks'))
                             ->groupBy('products.product_id')
                             ->paginate(20);
 
@@ -91,6 +93,7 @@ class ManageProductController extends MainController
         $this->data['product'] = ProductModel::where('product_id', $product_id)->first();
         $this->data['_images'] = ProductImage::where('product_id', $product_id)->get();
         $this->data['_brands'] = BrandModel::details(Auth::user()->id)->get();
+        $this->data['sale']    = OnSale::where('product_id', $product_id)->first();
         $_attr      = attributes();
         $attr_array = array();
         foreach($_attr as $attr)
@@ -113,7 +116,8 @@ class ManageProductController extends MainController
 
             array_push($attr_array, $temp);
         }
-        // dd($attr_array);
+        // dd($product_id);
+        // dd($this->data['sale']);
         $this->data['_attr'] = $attr_array;
         return view('products.edit', $this->data);
     }
@@ -291,7 +295,42 @@ class ManageProductController extends MainController
 
     public function put_sale(Request $request)
     {
+        $product = ProductModel::where('product_id', $request->id)->first();
+        $slash = OnSale::where('product_id', $request->id)->first();
         $data['product_id'] = $request->id;
+        $data['product_price'] = isset($product->product_price) ? $product->product_price : 0;
+        $data['slash_price'] = isset($slash->sale_price) ? $slash->sale_price : 0;
         return view('products.sale',$data); 
+    }
+
+    public function update_sale(Request $request)
+    {
+        $product_id             = $request->product_id;
+        $update                 = new ProductModel;
+        $update->exists         = true;
+        $update->product_id     = $product_id;
+        $update->product_price  = $request->product_price;
+        $update->save();
+
+        $data                   = ProductModel::where('product_id', $product_id)->first();
+
+        OnSale::where('product_id',$product_id)->delete();
+
+        $log_string = $data->product_name.' reverted to original price ('.number_format($request->product_price, 2).')';
+
+        if($request->slash != '' && $request->slash > 0 && !is_null($request->slash))
+        {
+            $sale                       = new OnSale;
+            $sale->product_identifier   = $data->product_identifier;
+            $sale->sale_price           = $request->slash;
+            $sale->product_id           = $product_id;
+            $sale->save();
+            $log_string = $data->product_name.' put to sale price ('.number_format($request->product_price, 2).')';
+        }
+
+        $logs                   = new SystemLogs;
+        $logs->seller_id        = Auth::user()->id;
+        $logs->logs             = $log_string;
+        $logs->save();
     }
 }

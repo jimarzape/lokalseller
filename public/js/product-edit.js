@@ -54,9 +54,10 @@ function product_edit()
 				data 	: 	formdata,
 				success : 	function(result)
 				{
-					$("#stock-modal").modal('toggle');
+					// $("#stock-modal").modal('toggle');
 					alert_toast("success","Stocks has been updated");
-					reload();
+					// reload();
+					window.location.reload();
 				},
 				error 	: 	function(Err){
 					btn.html(btn_html);

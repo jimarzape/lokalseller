@@ -22,6 +22,7 @@
 									<th class="text-gold">Brand</th>
 									<th class="text-gold">Retail Price</th>
 									<th class="text-gold">Stocks</th>
+									<th class="text-center text-gold">On Sale</th>
 									<th class="text-gold text-center">Active</th>
 									<th class="text-gold text-center">Actions</th>
 								</tr>
@@ -38,6 +39,7 @@
 												@endforeach
 											</select>
 										</th>
+										<th></th>
 										<th colspan="4" class="text-right">
 											<button class="btn btn-gold" type="submit"><i class="mdi mdi-magnify"></i>&nbsp;Search</button>
 										</th>
@@ -50,9 +52,20 @@
 								<tr>
 									<td class="text-gold"><a href="{{route('product.edit',Crypt::encrypt ($item->product_id))}}">{{$item->product_name}}</a></td>
 									<td class="text-gold">{{$item->brand_name}}</td>
-									<td class="text-gold text-right">{{number_format($item->product_price, 2)}}</td>
+									<td class="text-gold text-right">
+										@if(!is_null($item->sale_price))
+											<i style="text-decoration: line-through;">{{number_format($item->sale_price, 2)}}</i>
+											<br/>
+										@endif
+										{{number_format($item->product_price, 2)}}
+									</td>
 									<td class="text-gold text-right">
 										{{number_format($item->stocks)}}
+									</td>
+									<td class="text-center">
+										@if(!is_null($item->sale_price))
+											<i style="color:green" class="fa fa-check text-gold" aria-hidden="true"></i>
+										@endif
 									</td>
 									<td class="text-center ">
 										<a href="javascript:void(0)" class="btn-status" data-id="{{$item->product_id}}" data-url="{{route('product.status')}}">

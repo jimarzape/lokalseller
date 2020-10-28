@@ -1,4 +1,4 @@
-<form action="{{route('product.save_stock')}}" method="POST" class="form-submit">
+<form action="{{route('product.update_sale')}}" method="POST" class="form-submit">
 	@csrf
     <input type="hidden" name="product_id" value="{{$product_id}}">
 	<div class="modal-header">
@@ -10,14 +10,14 @@
     		<div class="col-md-12">
                 <div class="form-group">
                     <label>Sale Price</label>
-                    <input type="number" name="sale" class="form-control" step="any" min="0">
+                    <input type="number" name="product_price" class="form-control text-right" step="any" min="1" value="{{$product_price}}" required>
                 </div>
                 <div class="form-group">
-                    <label>Original Price</label>
-                    <input type="number" name="original" class="form-control" min="1" step="any" required>
+                    <label>Slash Price</label>
+                    <input type="number" name="slash" class="form-control text-right" min="0" step="any" value="{{$slash_price}}">
                 </div>
                 <div class="form-group">
-                    <i>Leaving <b>Sale Price</b> to zero means item won't be on any sale discount price.</i>
+                    <i>Leaving <b>SLASH PRICE</b> to zero means item won't be on any sale discount price and sale price will treat as <b>ORIGINAL</b> price</i>
                 </div>
             </div>
     	</div>

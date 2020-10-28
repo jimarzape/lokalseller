@@ -21,6 +21,7 @@
 									<th class="text-gold">Brand</th>
 									<th class="text-gold">Retail Price</th>
 									<th class="text-gold">Stocks</th>
+									<th class="text-center text-gold">On Sale</th>
 									<th class="text-gold text-center">Active</th>
 									<th class="text-gold text-center">Actions</th>
 								</tr>
@@ -49,10 +50,22 @@
 								<tr>
 									<td class="text-gold"><a href="<?php echo e(route('product.edit',Crypt::encrypt ($item->product_id))); ?>"><?php echo e($item->product_name); ?></a></td>
 									<td class="text-gold"><?php echo e($item->brand_name); ?></td>
-									<td class="text-gold text-right"><?php echo e(number_format($item->product_price, 2)); ?></td>
+									<td class="text-gold text-right">
+										<?php if(!is_null($item->sale_price)): ?>
+											<i style="text-decoration: line-through;"><?php echo e(number_format($item->sale_price, 2)); ?></i>
+											<br/>
+										<?php endif; ?>
+										<?php echo e(number_format($item->product_price, 2)); ?>
+
+									</td>
 									<td class="text-gold text-right">
 										<?php echo e(number_format($item->stocks)); ?>
 
+									</td>
+									<td class="text-center">
+										<?php if(!is_null($item->sale_price)): ?>
+											<i style="color:green" class="fa fa-check text-gold" aria-hidden="true"></i>
+										<?php endif; ?>
 									</td>
 									<td class="text-center ">
 										<a href="javascript:void(0)" class="btn-status" data-id="<?php echo e($item->product_id); ?>" data-url="<?php echo e(route('product.status')); ?>">
