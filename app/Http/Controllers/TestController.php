@@ -16,6 +16,7 @@ use App\Models\SellerOrder;
 use App\Models\StockLogs;
 use App\Models\SellerOrderItems;
 use DB;
+use Crypt;
 
 class TestController extends Controller
 {
@@ -550,6 +551,8 @@ class TestController extends Controller
 
     public function index()
     {
+        $id = 'eyJpdiI6ImxOcVVabStLWXBNdDVaS0JTVE05REE9PSIsInZhbHVlIjoibnBReEJtNXdzUlFvTTAyK1lzVVVOZz09IiwibWFjIjoiNjkyMThjZjU2YWM3NmZkNTlmZTM0YmEyM2EwYjI1OTRjOTNkYjYzOTBjMjU5M2U0MzE0NTUxMDgwOTZjOWEzNyJ9';
+        dd(Crypt::decrypt($id));
         // dd('LKL-'. 17878 .time());
         // $_products = ProductModel::select('*','brands.brand_identifier as b_identity')->leftjoin('brands','brands.brand_id','products.brand_id')->where('products.brand_identifier','')->get();
         // // dd($_products);
@@ -565,7 +568,7 @@ class TestController extends Controller
         // dd($_products->count());
         // Self::order_status();
         // Self::json();
-        Self::lkl_product();
+        // Self::lkl_product();
     }
 
     public function lkl_product()
