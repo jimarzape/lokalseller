@@ -92,6 +92,7 @@ class OrdersController extends MainController
         
     	$this->data['order'] = SellerOrder::select('*','orders.id as order_id')
                                          ->where('seller_order_id', $order_id)
+                                         ->where('seller_order.seller_id',Auth::user()->id)
                                          ->leftjoin('orders','orders.id','seller_order.order_id')
                                          ->leftjoin('users','users.userToken','orders.user_token')
                                          ->leftjoin('payment_methods','payment_methods.id','orders.order_payment_type')
@@ -105,6 +106,10 @@ class OrdersController extends MainController
         $this->data['_items']   =  SellerOrderItems::details($order_id)->get();
         $this->data['_status']  = OrderStatus::get();
         $this->data['_pouches'] = PouchModel::orderBy('pouch_price')->get();
+        if(is_null($this->data['order']))
+        {
+            return view('orders.notfound', $this->data);
+        }
     	return view('orders.view', $this->data);
     }
 
@@ -334,6 +339,54 @@ class OrdersController extends MainController
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
             $result = curl_exec($curl); 
+            // dd($shipping);
+
+            $error_msg = array(
+                'different_regions' => 'Addresses from different regions are not allowed.',
+                "required" => "Required parameter was not provided.",
+                "unknown" => "Unknown parameter was encountered.",
+                "invalid_list" => "Invalid JSON list.",
+                "invalid_object" => "Invalid JSON object.",
+                "invalid_boolean" => "Invalid boolean.",
+                "invalid_date" => "Invalid date or time.",
+                "invalid_date_format" => "Invalid date and time format.",
+                "invalid_float" => "Invalid floating point number.",
+                "invalid_integer" => "Invalid integer number.",
+                "invalid_string" => "Invalid string.",
+                "invalid_order" => "Order ID was not found.",
+                "invalid_point" => "Point ID was not found.",
+                "invalid_order_status" => "Invalid order status.",
+                "invalid_vehicle_type" => "Invalid vehicle type.",
+                "invalid_courier" => "Invalid courier ID.",
+                "invalid_phone" => "Invalid phone number.",
+                "invalid_region" => "Address is out of the delivery area for the region.",
+                "invalid_order_package" => "Package was not found",
+                "invalid_delivery_id" => "Delivery ID was not found",
+                "invalid_delivery_package" => "Package ID for delivery was not found",
+                "invalid_delivery_status" => "Invalid delivery status",
+                "invalid_bank_card" => "Bank card ID was not found",
+                "invalid_url" => "Invalid url",
+                "invalid_enum_value" => "Invalid enum value",
+                "different_regions" => "Addresses from different regions are not allowed.",
+                "address_not_found" => "Address geocoding failed. Check your address with Google Maps service.",
+                "min_length" => "String value is too short.",
+                "max_length" => "String value is too long.",
+                "min_date" =>  "Date and time is older than possible.",
+                "max_date" =>  "Date and time is later than possible.",
+                "min_size" =>  "List size is too small.",
+                "max_size" => "List size is too large.",
+                "min_value" => "Value is too small.",
+                "max_value" => "Value is too large.",
+                "cannot_be_past" => "Date and time cannot be in the past.",
+                "start_after_end" => "Incorrect time interval. Start time should be earlier than the end.",
+                "earlier_than_previous_point" => "Incorrect time interval. Time cannot be earlier than previous point time.",
+                "coordinates_out_of_bounds" => "Point coordinates are outside acceptable delivery areas",
+                "not_nullable" => "Value can not be null",
+                "not_allowed" => "Parameter not allowed",
+                "order_payment_only_one_point" => "Order payment can be specified only for one point",
+                "cod_agreement_required" => "COD agreement required"
+            );
+
             if ($result === false) { 
 
                 // throw new \Exception(curl_error($curl), curl_errno($curl)); 
@@ -342,8 +395,35 @@ class OrdersController extends MainController
             } 
             else
             {
+                $res_arr = json_decode($result);
                 $ret['success'] = true;
                 $ret['message'] = '';
+                if(isset($res_arr->is_successful) && $res_arr->is_successful == false)
+                {
+                    // dd($res_arr);
+                    if(isset($res_arr->parameter_errors))
+                    {
+                        if(isset($res_arr->parameter_errors->points))
+                        {
+                            foreach($res_arr->parameter_errors->points as $msgs)
+                            {
+                                foreach($msgs as $mrError)
+                                {
+                                    // dd($mrError[0]);
+                                     if(isset($mrError[0]))
+                                     {
+                                        $ret['message'] = $error_msg[$mrError[0]];
+                                     }
+                                }
+                               
+                            }
+
+                            $ret['success'] = false;
+                        }
+                    }
+                }
+               
+                
             }
             // dd($json);
             $returns = json_decode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

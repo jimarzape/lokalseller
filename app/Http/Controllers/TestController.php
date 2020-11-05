@@ -551,7 +551,7 @@ class TestController extends Controller
 
     public function index()
     {
-        $id = 'eyJpdiI6ImxOcVVabStLWXBNdDVaS0JTVE05REE9PSIsInZhbHVlIjoibnBReEJtNXdzUlFvTTAyK1lzVVVOZz09IiwibWFjIjoiNjkyMThjZjU2YWM3NmZkNTlmZTM0YmEyM2EwYjI1OTRjOTNkYjYzOTBjMjU5M2U0MzE0NTUxMDgwOTZjOWEzNyJ9';
+        $id = 'eyJpdiI6IlwvRjZrYzVzVDRcL0VEMGJVWFJWYnpQUT09IiwidmFsdWUiOiI3eWt1cE9uaVwvM01URkhsQld1Nm5uZz09IiwibWFjIjoiOGMyNDdhYThkNDJlMThmMDAwNTk4MTU5YWU0ZjFlOGQyY2YyODkyMjc5ZDA0ZDJhNjg0ZWEyMjFmYjNlM2JmYSJ9';
         dd(Crypt::decrypt($id));
         // dd('LKL-'. 17878 .time());
         // $_products = ProductModel::select('*','brands.brand_identifier as b_identity')->leftjoin('brands','brands.brand_id','products.brand_id')->where('products.brand_identifier','')->get();

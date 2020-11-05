@@ -428,6 +428,26 @@ function _pages()
     // $details['sub']     = array();
     // array_push($pages, $details);
 
+    $details['title']   = 'Courier'; 
+    $details['icon']    = 'mdi mdi-truck';
+    $details['url']     = '#';
+    $details['status']  = '';
+    $details['desc']    = 'nav.courier';
+    $details['class']   = '';
+    $details['has_sub'] = true;
+    $details['sub']     = array();
+
+    $sub['title']       = 'Ninja Van';
+    $sub['icon']        = '';
+    $sub['url']         = route('courier.ninja');
+    $sub['status']      = '';
+    $sub['desc']        = 'nav.sponsored.overview';
+
+    array_push($details['sub'], $sub);
+
+    array_push($pages, $details);
+
+
     $details['title']   = 'Logs'; 
     $details['icon']    = 'mdi mdi-file-document-box';
     $details['url']     = route('system.logs');

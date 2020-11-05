@@ -75,3 +75,6 @@ Route::get('/logs', 'Logs\LogsController@index')->name('system.logs');
 
 Route::get('/account/pending','DeniedController@pending')->name('account.pending');
 Route::get('/account/declined','DeniedController@declined')->name('account.declined');
+
+Route::get('/courier/ninja-van', 'Courier\NinjaVanController@index')->name('courier.ninja');
+Route::POST('/courier/ninja-van/save', 'Courier\NinjaVanController@save')->name('courier.ninja.save');
