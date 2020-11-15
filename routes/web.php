@@ -63,6 +63,7 @@ Route::get('/test/fixorder', 'TestController@fixorder');
 Route::post('/test/fixorder/check', 'TestController@check_error_orders')->name('check.fix.order');
 Route::post('/test/fixorder/check/order', 'TestController@check_order_number')->name('check.order.number');
 Route::post('/test/fixorder/fix', 'TestController@fix_this_order')->name('check.order.fix');
+Route::get('/test/email', 'TestController@email');
 
 Route::post('/register/city', 'TestController@load_city')->name('reg.city');
 Route::post('/register/brgy', 'TestController@load_brgy')->name('reg.brgy');

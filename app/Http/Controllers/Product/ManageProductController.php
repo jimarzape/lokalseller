@@ -90,7 +90,7 @@ class ManageProductController extends MainController
     public function edit($product_id)
     {
         $product_id = Crypt::decrypt($product_id);
-        $this->data['product'] = ProductModel::where('product_id', $product_id)->first();
+        $this->data['product'] = ProductModel::where('product_id', $product_id)->where('seller_id', Auth::user()->id)->first();
         $this->data['_images'] = ProductImage::where('product_id', $product_id)->get();
         $this->data['_brands'] = BrandModel::details(Auth::user()->id)->get();
         $this->data['sale']    = OnSale::where('product_id', $product_id)->first();
@@ -119,6 +119,10 @@ class ManageProductController extends MainController
         // dd($product_id);
         // dd($this->data['sale']);
         $this->data['_attr'] = $attr_array;
+        if(is_null($this->data['product']))
+        {
+            return view('products.notfound', $this->data);
+        }
         return view('products.edit', $this->data);
     }
 

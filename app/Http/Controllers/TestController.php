@@ -454,7 +454,7 @@ class TestController extends Controller
                              })
                              ->where('cart_order_number', $order_number)
                              ->get()->toArray();
-        dd($_cart);
+        // dd($_cart);
         $order = OrderModel::where('order_number', $order_number)->first();
         $order_id           = $order->id;
         $delivery_fee       = $order->order_delivery_fee;
@@ -476,7 +476,14 @@ class TestController extends Controller
             $subtotal       = 0;
             $total_weight   = 0;
 
+            $check_seller = SellerOrder::where('order_id', $order_id)->where('seller_id', $seller_id)->first();
+
             $seller                         = new SellerOrder;
+            if(!is_null($check_seller))
+            {
+                $seller->exists             = true;
+                $seller->seller_order_id    = $check_seller->seller_order_id;
+            }
             $seller->order_id               =  $order_id;
             $seller->seller_id              =  $seller_id;
             $seller->order_number           =  $order_number;
@@ -491,7 +498,14 @@ class TestController extends Controller
             $seller->seller_delivery_status = $delivery_status;
             $seller->seller_remarks         = '';
             $seller->save();   
-            $seller_order_id = $seller->seller_order_id;
+            if(is_null($check_seller))
+            {
+                $seller_order_id = $seller->seller_order_id;
+            }
+            else
+            {
+                $seller_order_id = $check_seller->seller_order_id;
+            }
 
             foreach($sell_items as $items)
             {
@@ -690,5 +704,21 @@ class TestController extends Controller
     public function coming_soon()
     {
         
+    }
+
+    public function email()
+    {
+        $headers[] = 'MIME-Version: 1.0';
+        $headers[] = 'Content-type: text/html; charset=utf-8';
+        $headers[] = 'From: LokaldatPH <order@lokaldatph.com>';
+        $email_address = 'jimarzape@gmail.com';
+        $subject = 'Test';
+        $message = 'Test';
+        $html = view('email.test')->render();
+        // $result = mail($email_address, $subject, $html, implode("\r\n", $headers));
+        // dd($result);
+
+        
+        return $html;
     }
 }

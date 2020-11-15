@@ -38,6 +38,7 @@
 												<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 											</select>
 										</th>
+										<th></th>
 										<th colspan="4" class="text-right">
 											<button class="btn btn-gold" type="submit"><i class="mdi mdi-magnify"></i>&nbsp;Search</button>
 										</th>
